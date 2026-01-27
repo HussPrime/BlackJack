@@ -6,12 +6,34 @@ Command: npx gltfjsx@6.5.3 .\card_deck.gltf
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export default function Model(props) {
+export default function Model({card, position, rotation, props}) {
   const { nodes, materials } = useGLTF('/card_deck/card_deck.gltf')
+
+  if(card){
+    return(
+      <group position={position} rotation={rotation} scale={0.0025} {...props}>
+        {
+          card.meshes.map((m, i) => (
+            <mesh
+            key={i}
+              geometry={nodes[m.mesh].geometry}
+              material={materials[m.materials]}
+            />
+          ))
+        }
+      </group>
+    )
+  }
+
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI * 0.5, 0, 0]} scale={0.0025} position={[0, 0.87, 0]}>
         <group rotation={[0, 0, 0]}>
+          <group position={[-364.902, -156.008, 5.387]} scale={[1.122, 1, 0.492]}>
+            <mesh geometry={nodes['Ace_of_Clubs_01_-_Default_0'].geometry} material={materials['01_-_Default.003']} />
+            <mesh geometry={nodes['Ace_of_Clubs_07_-_Default_0'].geometry} material={materials['07_-_Default.002']} />
+            <mesh geometry={nodes['Ace_of_Clubs_27_0'].geometry} material={materials['material_41.002']} />
+          </group>
           <group position={[-364.902, -156.008, 5.387]} scale={[1.122, 1, 0.492]}>
             <mesh geometry={nodes['Ace_of_Clubs_01_-_Default_0'].geometry} material={materials['01_-_Default.003']} />
             <mesh geometry={nodes['Ace_of_Clubs_07_-_Default_0'].geometry} material={materials['07_-_Default.002']} />
