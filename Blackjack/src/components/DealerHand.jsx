@@ -11,4 +11,12 @@ export default class DealerHand extends React.Component{
     static resetCards(){
         this.cards = []
     }
+
+    static getScore(){
+        let score = 0
+        this.cards.forEach(c => {
+            !c.isHidden ? score += c.card.value : 0
+        })
+        return score
+    }
 }

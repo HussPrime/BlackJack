@@ -11,7 +11,7 @@ export default function Model({card, position, rotation, props}) {
 
   if(card){
     return(
-      <group position={position} rotation={rotation} scale={0.0025} {...props}>
+      <group position={position} rotation={rotation} scale={[0.003, 0.0025, 0.003]} {...props}>
         {
           card.meshes.map((m, i) => (
             <mesh

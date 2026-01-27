@@ -11,4 +11,12 @@ export default class PlayerHand extends React.Component{
     static resetCards(){
         this.cards = []
     }
+
+    static getScore(){
+        let score = 0
+        this.cards.forEach(c => {
+            score += c.value
+        })
+        return score
+    }
 }
