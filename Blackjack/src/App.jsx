@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber"
 import { Suspense, useEffect, useState } from "react"
-import Blackjack_table from "../public/blackjack_table/Blackjack_table"
-import Card_Deck from "../public/card_deck/Card_deck"
+import Blackjack_table from "./components/Blackjack_table"
+import Card_Deck from "./components/Card_deck"
 import { cards } from "./data/cardsData"
 import { Environment, OrbitControls } from "@react-three/drei"
 
@@ -9,7 +9,7 @@ import Game from "./components/Game"
 import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
-import HUD from "../public/HUD"
+import HUD from "./components/HUD"
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
