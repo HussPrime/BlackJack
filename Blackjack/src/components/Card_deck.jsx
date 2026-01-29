@@ -7,7 +7,7 @@ import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Model({card, position, rotation, props}) {
-  const { nodes, materials } = useGLTF('`${import.meta.env.BASE_URL}card_deck/card_deck.gltf`')
+  const { nodes, materials } = useGLTF(`${import.meta.env.BASE_URL}card_deck/card_deck.gltf`)
 
   if(card){
     return(
