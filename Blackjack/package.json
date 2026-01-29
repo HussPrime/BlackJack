@@ -1,7 +1,7 @@
 {
   "name": "blackjack",
   "private": true,
-  "homepage": "https://HussPrime.github.io/BlackJack",
+  "homepage": "https://hussprime.github.io/BlackJack",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
