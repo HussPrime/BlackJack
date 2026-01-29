@@ -11,7 +11,7 @@ import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Model(props) {
-  const { nodes, materials } = useGLTF('/blackjack_table/blackjack_table.gltf')
+  const { nodes, materials } = useGLTF(`${import.meta.env.BASE_URL}blackjack_table/blackjack_table.gltf`)
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={1.704}>
@@ -35,4 +35,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('/blackjack_table/blackjack_table.gltf')
+useGLTF.preload(`${import.meta.env.BASE_URL}blackjack_table/blackjack_table.gltf`)
