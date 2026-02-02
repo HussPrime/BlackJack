@@ -11,7 +11,8 @@ import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "../public/HUD"
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+import { AnimatedPickUpCard } from "./components/AnimatedCards"
+
 
 const BlackJack = () => {
   const [playerCards, setPlayerCards] = useState(PlayerHand.cards)
@@ -22,6 +23,7 @@ const BlackJack = () => {
   const [stand, setStand] = useState(false);
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   useEffect(() => {
     setRestart(false)
@@ -61,35 +63,36 @@ const BlackJack = () => {
   }
 
   const onStand = async () => {
-    await sleep(300)
-    setMessage("Dealer's turn");
-    setStand(true)
-    DealerHand.cards.forEach(c => {
-      c.isHidden = false
-    });
+  await sleep(300)
+
+  setMessage("Dealer's turn")
+  setStand(true)
+
+  DealerHand.cards.forEach(c => {
+    c.isHidden = false
+  })
+  setDealerCards([...DealerHand.cards])
+  setDealerScore(DealerHand.getScore())
+
+  while (DealerHand.getScore() <= 16) {
+    await sleep(800)
+    DealerHand.addCard(Cards.getRandomCard(), false)
     setDealerCards([...DealerHand.cards])
     setDealerScore(DealerHand.getScore())
+  }
 
-    let isHover16 = DealerHand.getScore() > 16 ? true : false
-    while(!isHover16){
-      await sleep(800)
-      DealerHand.addCard(Cards.getRandomCard(), false)
-      setDealerCards([...DealerHand.cards])
-      setDealerScore(DealerHand.getScore())
-      isHover16 = DealerHand.getScore() > 16 ? true : false
-    }
+  const finalPlayerScore = PlayerHand.getScore()
+  const finalDealerScore = DealerHand.getScore()
 
-    console.log(`Player score : ${playerScore}\nDealer score : ${dealerScore}`)
+  if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore)
+    setMessage("You won")
+  else if (finalPlayerScore < finalDealerScore)
+    setMessage("You lost")
+  else
+    setMessage("Tie")
 
-    if(playerScore > dealerScore ||dealerScore > 21)
-      setMessage("You won")
-    else if ( playerScore < dealerScore)
-      setMessage("You lost")
-    else
-      setMessage("Tie")
-
-    setIsGameFinished(true)
-  };
+  setIsGameFinished(true)
+}
 
   const onRetry = () => {
     setRestart(true)
@@ -112,40 +115,55 @@ const BlackJack = () => {
           />
           */}
 
-        {/*<OrbitControls/>*/}
+        {<OrbitControls/>}
 
         <Suspense fallback={null}>
           <Blackjack_table position={[0, 0, -1.15]}/>   
           { // Afficher la main du dealer
             dealerCards.map((c, index) => {
-            const spacing = 0.15;
-            const totalCards = dealerCards.length;
-            const offset = ((totalCards - 1) * spacing) / 2;
-            
+            const spacing = 0.15
+            const totalCards = dealerCards.length
+            const offset = ((totalCards - 1) * spacing) / 2
+
             return (
-              <Card_Deck
-              key={c.card.id}
-              card={c.card}
-              rotation={[-Math.PI * 0.5, c.isHidden ? Math.PI : 0, 0]}
-              position={[index * spacing - offset, 0.875, -0.5]}
+              <AnimatedPickUpCard
+                key={c.card.id}
+                card={c.card}
+                rotation={c.isHidden ? [-Math.PI*0.5, Math.PI, 0] : [-Math.PI*0.5, 0, 0]}
+                position={[index * spacing - offset, 0.875, -0.5]}
               />
             )
-            })
+          })
           }
           { // Afficher la main du joueur
             playerCards.map((c, index) => {
             const spacing = 0.03; // distance entre les cartes
             const totalCards = playerCards.length;
             const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
+
+            return(<AnimatedPickUpCard
+              key={c.id}
+              card={c}
+              position={[index * spacing - offset, 0.875+index*0.0001, 0.285]}
+              rotation={[-Math.PI * 0.5, 0, 0]}
+            />)
             
-            return (
-              <Card_Deck
-                key={c.id}
-                card={c}
-                rotation={[-Math.PI * 0.5, 0, 0]}
-                position={[index * spacing - offset, 0.875+index*0.0001, 0.285]} // décale pour centrer
-              />
-            )
+            })
+          }
+          { // Afficher le tas
+            Cards.cards.map((c, index) => {
+              const spacing = 0.003; // distance entre les cartes
+              const totalCards = Cards.cards.length;
+              const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
+
+              return(
+                <Card_Deck
+                  key={c.id}
+                  card={c}
+                  rotation={[-Math.PI * 0.5, Math.PI, 0]}
+                  position={[0.75, 0.875+index*spacing, -0.5]}
+                />
+              )
             })
           }
         </Suspense>
