@@ -1,5 +1,5 @@
 import { animated, useSpring, useTransition } from "@react-spring/three"
-import Card_Deck from "../../public/card_deck/Card_deck"
+import Card_Deck from "./Card_deck"
 
 export const AnimatedPickUpCard = ({card, position, rotation}) => {
     const spring = useSpring({

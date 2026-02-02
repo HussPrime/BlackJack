@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber"
 import { Suspense, useEffect, useState } from "react"
-import Blackjack_table from "../public/blackjack_table/Blackjack_table"
-import Card_Deck from "../public/card_deck/Card_deck"
+import Blackjack_table from "./components/Blackjack_table"
+import Card_Deck from "./components/Card_deck"
 import { cards } from "./data/cardsData"
 import { Environment, OrbitControls } from "@react-three/drei"
 
@@ -9,7 +9,8 @@ import Game from "./components/Game"
 import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
-import HUD from "../public/HUD"
+import HUD from "./components/HUD"
+import Casino from "../public/casino/Casino-transformed"
 
 import { AnimatedPickUpCard } from "./components/AnimatedCards"
 
@@ -23,6 +24,7 @@ const BlackJack = () => {
   const [stand, setStand] = useState(false);
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const [deck, setDeck] = useState([])
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   useEffect(() => {
@@ -36,6 +38,8 @@ const BlackJack = () => {
 
     setPlayerScore(PlayerHand.getScore());
     setDealerScore(DealerHand.getScore());
+
+    setDeck([...Cards.cards])
 
     if (PlayerHand.getScore() == 21){
       setMessage("Dealer's turn")
@@ -51,6 +55,7 @@ const BlackJack = () => {
     PlayerHand.addCard(Cards.getRandomCard())
     setPlayerCards([...PlayerHand.cards])
     setPlayerScore(PlayerHand.getScore());
+    setDeck([...Cards.cards])
 
     if (PlayerHand.getScore() > 21) {
       setMessage("You lost");
@@ -63,7 +68,7 @@ const BlackJack = () => {
   }
 
   const onStand = async () => {
-  await sleep(300)
+  await sleep(700)
 
   setMessage("Dealer's turn")
   setStand(true)
@@ -75,10 +80,11 @@ const BlackJack = () => {
   setDealerScore(DealerHand.getScore())
 
   while (DealerHand.getScore() <= 16) {
-    await sleep(800)
+    await sleep(1350)
     DealerHand.addCard(Cards.getRandomCard(), false)
     setDealerCards([...DealerHand.cards])
     setDealerScore(DealerHand.getScore())
+    setDeck([...Cards.cards])
   }
 
   const finalPlayerScore = PlayerHand.getScore()
@@ -151,10 +157,8 @@ const BlackJack = () => {
             })
           }
           { // Afficher le tas
-            Cards.cards.map((c, index) => {
+            deck.map((c, index) => {
               const spacing = 0.003; // distance entre les cartes
-              const totalCards = Cards.cards.length;
-              const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
 
               return(
                 <Card_Deck
@@ -166,6 +170,8 @@ const BlackJack = () => {
               )
             })
           }
+
+          {/*<Casino/>*/}
         </Suspense>
       </Canvas>
       <HUD playerScore={playerScore} dealerScore={dealerScore} message={message} onHit={onHit} onStand={onStand} isStand={stand} onRetry={onRetry} isGameFinished={isGameFinished} />
