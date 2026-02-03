@@ -5,7 +5,6 @@ import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
-import Casino from "../public/casino/Casino-transformed"
 
 import HUD3D from "./components/HUD3D"
 
