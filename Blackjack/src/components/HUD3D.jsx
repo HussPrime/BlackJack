@@ -186,7 +186,7 @@ export default function HUD3D({
           />
           */}
 
-        {<OrbitControls/>}
+        {/*<OrbitControls/>*/}
 
         <Suspense fallback={null}>
           <Blackjack_table position={[0, 0, -1.15]}/>   

@@ -33,7 +33,7 @@ export default function HUD({
       <div className="hud-actions">
         {
             playerScore > 21 || isGameFinished? 
-            <button className="hud-btn stand" onClick={onRetry}>RETRY</button> :
+            <button className="hud-btn replay" onClick={onRetry}>REPLAY</button> :
             hasBet ?
             <>
             <button className={isHover21 || isStand ? "hud-btn-disable" : "hud-btn hit"} onClick={!isHover21 && !isStand ? onHit : function() {}}>
