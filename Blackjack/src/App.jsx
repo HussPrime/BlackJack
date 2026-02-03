@@ -5,7 +5,7 @@ import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
-import Casino from "../public/casino/Casino-transformed"
+//import Casino from "../public/casino/Casino-transformed"
 
 import HUD3D from "./components/HUD3D"
 
@@ -27,7 +27,8 @@ const BlackJack = () => {
 
   useEffect(() => {
     setHasBet(false)
-    setBet(0)
+    if(bet > monney)
+      setBet(monney)
     setRestart(false)
     setStand(false)
     setIsGameFinished(false)
@@ -36,7 +37,7 @@ const BlackJack = () => {
     
 
     if(monney == 0){
-      let x = Math.floor(Math.random() * 10) + 1
+      let x = 100 //Math.floor(Math.random() * 100) + 1
       setMonney(x)
       setMessage(`Someone gave you ${x}`)
     }
@@ -84,8 +85,8 @@ const BlackJack = () => {
   const onStand = async () => {
     await sleep(700)
 
-    setMessage("Dealer's turn")
     setStand(true)
+    setMessage("Dealer's turn")
 
     DealerHand.cards.forEach(c => {
       c.isHidden = false
@@ -106,6 +107,7 @@ const BlackJack = () => {
 
     if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
       setMessage("You won")
+      await sleep(500)
       setMonney(m => m + 2 * bet)
     }
     else if (finalPlayerScore < finalDealerScore){
@@ -113,6 +115,7 @@ const BlackJack = () => {
     }
     else{
       setMessage("Tie")
+      await sleep(500)
       setMonney(m => m + bet)
     }
 
@@ -130,6 +133,8 @@ const BlackJack = () => {
         playerCards={playerCards}
         deck={deck}
         monney={monney}
+        bet={bet}
+        hasBet={hasBet}
       />
       <HUD 
         playerScore={playerScore} 

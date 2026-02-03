@@ -13,7 +13,9 @@ export default class PlayerHand extends React.Component{
 
     static getScore(){
         let score = 0
-        this.cards.forEach(c => {
+        let tmp = [...this.cards]
+        tmp.sort((a, b) => a > b )
+        tmp.forEach(c => {
             if(c.value == 11 && score + 11 > 21)
                 score += 1
             else 

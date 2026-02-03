@@ -94,7 +94,7 @@ body,
   border: 2px solid #e74c3c;
 }
 
-.hud-btn.bet{
+.hud-btn.bet, .hud-btn.replay{
   border: 2px solid gold;
 }
 
