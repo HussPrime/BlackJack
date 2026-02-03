@@ -148,7 +148,7 @@ const BlackJack = () => {
         !hasBet ?
         <div className="hud-bet">
           <span className="bet-label">Bet</span>
-          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(e.target.value)}} step="1" className="bet-slider" />
+          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(Number(e.target.value))}} step="1" className="bet-slider" />
           <span className="bet-value">{bet}</span>
           <br/>
           <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(monney-bet)}}>
