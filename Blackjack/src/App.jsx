@@ -5,6 +5,7 @@ import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
+import Casino from "../public/casino/Casino-transformed"
 
 import HUD3D from "./components/HUD3D"
 
@@ -105,14 +106,14 @@ const BlackJack = () => {
 
     if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
       setMessage("You won")
-      setMonney(monney + 2*bet)
+      setMonney(m => m + 2 * bet)
     }
     else if (finalPlayerScore < finalDealerScore){
       setMessage("You lost")
     }
     else{
       setMessage("Tie")
-      setMonney(monney + bet)
+      setMonney(m => m + bet)
     }
 
     setIsGameFinished(true)
