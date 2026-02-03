@@ -5,7 +5,7 @@ import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
-import Casino from "../public/casino/Casino-transformed"
+//import Casino from "../public/casino/Casino-transformed"
 
 import HUD3D from "./components/HUD3D"
 
@@ -36,7 +36,7 @@ const BlackJack = () => {
     
 
     if(monney == 0){
-      let x = Math.floor(Math.random() * 10) + 1
+      let x = 100 //Math.floor(Math.random() * 100) + 1
       setMonney(x)
       setMessage(`Someone gave you ${x}`)
     }
@@ -129,6 +129,9 @@ const BlackJack = () => {
         dealerCards={dealerCards}
         playerCards={playerCards}
         deck={deck}
+        monney={monney}
+        bet={bet}
+        hasBet={hasBet}
       />
       <HUD 
         playerScore={playerScore} 
@@ -148,7 +151,7 @@ const BlackJack = () => {
         !hasBet ?
         <div className="hud-bet">
           <span className="bet-label">Bet</span>
-          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(Number(e.target.value))}} step="1" className="bet-slider" />
+          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(Number(e.target.value))}} step="100" className="bet-slider" />
           <span className="bet-value">{bet}</span>
           <br/>
           <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(monney-bet)}}>
