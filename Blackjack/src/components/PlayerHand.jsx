@@ -1,5 +1,4 @@
 import React from "react";
-import Card_Deck from "./Card_deck"
 
 export default class PlayerHand extends React.Component{
     static cards = []
@@ -15,7 +14,10 @@ export default class PlayerHand extends React.Component{
     static getScore(){
         let score = 0
         this.cards.forEach(c => {
-            score += c.value
+            if(c.value == 11 && score + 11 > 21)
+                score += 1
+            else 
+                score += c.value
         })
         return score
     }

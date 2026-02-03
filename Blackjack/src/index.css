@@ -28,7 +28,7 @@ body,
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 40px;
+  gap: 30px; /*40*/
   font-size: 18px;
   font-weight: bold;
   text-shadow: 0 2px 6px rgba(0,0,0,0.8);
@@ -94,6 +94,10 @@ body,
   border: 2px solid #e74c3c;
 }
 
+.hud-btn.bet{
+  border: 2px solid gold;
+}
+
 .hud-btn-disable {
   padding: 14px 36px;
   font-size: 18px;
@@ -110,4 +114,83 @@ body,
 
 .hud-btn-disable:hover{
   cursor: not-allowed;
+}
+
+
+
+
+
+/* ---------- SLIDER MISE ---------- */
+
+.hud-bet {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  border-radius: 30px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  pointer-events: auto;
+  font-weight: bold;
+
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: white;
+}
+
+.bet-label {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.bet-value {
+  min-width: 40px;
+  text-align: right;
+  color: gold;
+  text-shadow: 0 0 6px rgba(255,215,0,0.6);
+}
+
+/* Slider base */
+.bet-slider {
+  -webkit-appearance: none;
+  width: 180px;
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  outline: none;
+}
+
+/* Track */
+.bet-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 10px;
+}
+
+/* Thumb */
+.bet-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: gold;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px rgba(255,215,0,0.8),
+    0 0 16px rgba(0,0,0,0.8);
+  margin-top: -7px;
+}
+
+.bet-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: gold;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px rgba(255,215,0,0.8),
+    0 0 16px rgba(0,0,0,0.8);
 }
