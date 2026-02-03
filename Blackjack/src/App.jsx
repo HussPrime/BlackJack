@@ -1,54 +1,75 @@
-import { Canvas } from "@react-three/fiber"
-import { Suspense, useEffect, useState } from "react"
-import Blackjack_table from "./components/Blackjack_table"
-import Card_Deck from "./components/Card_deck"
-import { cards } from "./data/cardsData"
-import { Environment, OrbitControls } from "@react-three/drei"
+import { useEffect, useState } from "react"
 
 import Game from "./components/Game"
 import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
+import Casino from "../public/casino/Casino-transformed"
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+import HUD3D from "./components/HUD3D"
+
 
 const BlackJack = () => {
   const [playerCards, setPlayerCards] = useState(PlayerHand.cards)
   const [dealerCards, setDealerCards] = useState(DealerHand.cards)
   const [playerScore, setPlayerScore] = useState(0);
   const [dealerScore, setDealerScore] = useState(0);
+  const [monney, setMonney] = useState(1000);
+  const [bet, setBet] = useState(0);
+  const [hasBet, setHasBet] = useState(false);
   const [message, setMessage] = useState("");
   const [stand, setStand] = useState(false);
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
+  const [deck, setDeck] = useState([])
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   useEffect(() => {
+    setHasBet(false)
+    setBet(0)
     setRestart(false)
     setStand(false)
     setIsGameFinished(false)
-    Game.initGame();
+    Cards.setCards()
+    setDeck([...Cards.cards])
+    
 
-    setPlayerCards([...PlayerHand.cards]);
-    setDealerCards([...DealerHand.cards]);
-
-    setPlayerScore(PlayerHand.getScore());
-    setDealerScore(DealerHand.getScore());
-
-    if (PlayerHand.getScore() == 21){
-      setMessage("Dealer's turn")
-      setStand(true)
-      onStand()
-    }
-    else{
-      setMessage("Your turn");
+    if(monney == 0){
+      let x = Math.floor(Math.random() * 10) + 1
+      setMonney(x)
+      setMessage(`Someone gave you ${x}`)
     }
   }, [restart]);
+
+  useEffect(() => {
+    if(hasBet){
+      Game.initGame();
+
+      setPlayerCards([...PlayerHand.cards]);
+      setDealerCards([...DealerHand.cards]);
+
+      setPlayerScore(PlayerHand.getScore());
+      setDealerScore(DealerHand.getScore());
+
+
+      if (PlayerHand.getScore() == 21){
+        setMessage("Dealer's turn")
+        setStand(true)
+        onStand()
+      }
+      else{
+        setMessage("Your turn");
+      }
+    }
+
+  }, [hasBet])
 
   const onHit = () => {
     PlayerHand.addCard(Cards.getRandomCard())
     setPlayerCards([...PlayerHand.cards])
     setPlayerScore(PlayerHand.getScore());
+    setDeck([...Cards.cards])
 
     if (PlayerHand.getScore() > 21) {
       setMessage("You lost");
@@ -61,35 +82,42 @@ const BlackJack = () => {
   }
 
   const onStand = async () => {
-    await sleep(300)
-    setMessage("Dealer's turn");
+    await sleep(700)
+
+    setMessage("Dealer's turn")
     setStand(true)
+
     DealerHand.cards.forEach(c => {
       c.isHidden = false
-    });
+    })
     setDealerCards([...DealerHand.cards])
     setDealerScore(DealerHand.getScore())
 
-    let isHover16 = DealerHand.getScore() > 16 ? true : false
-    while(!isHover16){
-      await sleep(800)
+    while (DealerHand.getScore() <= 16) {
+      await sleep(1350)
       DealerHand.addCard(Cards.getRandomCard(), false)
       setDealerCards([...DealerHand.cards])
       setDealerScore(DealerHand.getScore())
-      isHover16 = DealerHand.getScore() > 16 ? true : false
+      setDeck([...Cards.cards])
     }
 
-    console.log(`Player score : ${playerScore}\nDealer score : ${dealerScore}`)
+    const finalPlayerScore = PlayerHand.getScore()
+    const finalDealerScore = DealerHand.getScore()
 
-    if(playerScore > dealerScore ||dealerScore > 21)
+    if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
       setMessage("You won")
-    else if ( playerScore < dealerScore)
+      setMonney(monney + 2*bet)
+    }
+    else if (finalPlayerScore < finalDealerScore){
       setMessage("You lost")
-    else
+    }
+    else{
       setMessage("Tie")
+      setMonney(monney + bet)
+    }
 
     setIsGameFinished(true)
-  };
+  }
 
   const onRetry = () => {
     setRestart(true)
@@ -97,60 +125,38 @@ const BlackJack = () => {
   
   return(
     <>
-      <Canvas camera={{position: [0, 2, 0], fov: 75}} >
-        <ambientLight intensity={2}/>
-        <Environment preset="sunset"/>
-        {/*
-          <spotLight 
-          color={[255, 0, 0]}
-          intensity={1.5}
-          angle={0.6}
-          penumbra={0.5}
-          position={[5, 5, 0]}
-          castShadow
-          shadow-bias={-0.0001}
-          />
-          */}
-
-        {/*<OrbitControls/>*/}
-
-        <Suspense fallback={null}>
-          <Blackjack_table position={[0, 0, -1.15]}/>   
-          { // Afficher la main du dealer
-            dealerCards.map((c, index) => {
-            const spacing = 0.15;
-            const totalCards = dealerCards.length;
-            const offset = ((totalCards - 1) * spacing) / 2;
-            
-            return (
-              <Card_Deck
-              key={c.card.id}
-              card={c.card}
-              rotation={[-Math.PI * 0.5, c.isHidden ? Math.PI : 0, 0]}
-              position={[index * spacing - offset, 0.875, -0.5]}
-              />
-            )
-            })
-          }
-          { // Afficher la main du joueur
-            playerCards.map((c, index) => {
-            const spacing = 0.03; // distance entre les cartes
-            const totalCards = playerCards.length;
-            const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
-            
-            return (
-              <Card_Deck
-                key={c.id}
-                card={c}
-                rotation={[-Math.PI * 0.5, 0, 0]}
-                position={[index * spacing - offset, 0.875+index*0.0001, 0.285]} // décale pour centrer
-              />
-            )
-            })
-          }
-        </Suspense>
-      </Canvas>
-      <HUD playerScore={playerScore} dealerScore={dealerScore} message={message} onHit={onHit} onStand={onStand} isStand={stand} onRetry={onRetry} isGameFinished={isGameFinished} />
+      <HUD3D
+        dealerCards={dealerCards}
+        playerCards={playerCards}
+        deck={deck}
+      />
+      <HUD 
+        playerScore={playerScore} 
+        dealerScore={dealerScore} 
+        monney={monney} 
+        message={message} 
+        onHit={onHit} 
+        onStand={onStand} 
+        isStand={stand} 
+        onRetry={onRetry} 
+        isGameFinished={isGameFinished} 
+        hasBet={hasBet}
+        bet={bet}
+      />
+      
+      {
+        !hasBet ?
+        <div className="hud-bet">
+          <span className="bet-label">Bet</span>
+          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(e.target.value)}} step="1" className="bet-slider" />
+          <span className="bet-value">{bet}</span>
+          <br/>
+          <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(monney-bet)}}>
+            BET
+          </button>
+        </div>
+        : <></>
+      }
     </>
   )
 }
