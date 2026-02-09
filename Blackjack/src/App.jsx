@@ -68,14 +68,18 @@ const BlackJack = () => {
 
   const onHit = () => {
     PlayerHand.addCard(Cards.getRandomCard())
+    const newScore = PlayerHand.getScore()
+
     setPlayerCards([...PlayerHand.cards])
-    setPlayerScore(PlayerHand.getScore());
+    setPlayerScore(newScore)
     setDeck([...Cards.cards])
 
-    if (PlayerHand.getScore() > 21) {
-      setMessage("You lost");
+    if (newScore > 21) {
+      setMessage("You lost")
+      setIsGameFinished(true)
+      setStand(true) // IMPORTANT : bloque HIT/STAND
     }
-    else if (PlayerHand.getScore() == 21){
+    else if (newScore === 21) {
       setMessage("Dealer's turn")
       setStand(true)
       onStand()
@@ -83,9 +87,10 @@ const BlackJack = () => {
   }
 
   const onStand = async () => {
+    setStand(true)
+    
     await sleep(700)
 
-    setStand(true)
     setMessage("Dealer's turn")
 
     DealerHand.cards.forEach(c => {
@@ -131,14 +136,15 @@ const BlackJack = () => {
       <HUD3D
         dealerCards={dealerCards}
         playerCards={playerCards}
+        dealerScore={dealerScore}
+        playerScore={playerScore}
         deck={deck}
         monney={monney}
         bet={bet}
         hasBet={hasBet}
+        isGameFinished={isGameFinished}
       />
       <HUD 
-        playerScore={playerScore} 
-        dealerScore={dealerScore} 
         monney={monney} 
         message={message} 
         onHit={onHit} 
