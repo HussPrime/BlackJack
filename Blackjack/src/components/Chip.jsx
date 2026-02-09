@@ -12,19 +12,19 @@ export default function Model({amount, position, rotation, props}) {
   if(amount){
       return(
         <group position={position} rotation={rotation} {...props} dispose={null} scale={2.5}>
-          <mesh geometry={nodes[`Poker_Chip_${amount}`].geometry} material={materials[`Poker_chip_${amount}`]} />
+          <mesh geometry={nodes[`Poker_Chip_${amount}`].geometry} material={materials[`Poker_chip_${amount}`]} position={[0, 0.001, 0]} />
         </group>
       )
   }
 
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Poker_Chip_10000.geometry} material={materials.Poker_chip_10000} position={[-0.125, 0, 0]} />
-      <mesh geometry={nodes.Poker_Chip_100.geometry} material={materials.Poker_chip_100} position={[-0.125, 0, 0]} />
-      <mesh geometry={nodes.Poker_Chip_200.geometry} material={materials.Poker_chip_200} position={[-0.125, 0, 0]} />
-      <mesh geometry={nodes.Poker_Chip_500.geometry} material={materials.Poker_chip_500} position={[-0.125, 0, 0]} />
-      <mesh geometry={nodes.Poker_Chip_1000.geometry} material={materials.Poker_chip_1000} position={[-0.125, 0, 0]} />
-      <mesh geometry={nodes.Poker_Chip_2000.geometry} material={materials.Poker_chip_2000} position={[-0.125, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_10000.geometry} material={materials.Poker_chip_10000} position={[0, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_100.geometry} material={materials.Poker_chip_100} position={[0, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_200.geometry} material={materials.Poker_chip_200} position={[0, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_500.geometry} material={materials.Poker_chip_500} position={[0, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_1000.geometry} material={materials.Poker_chip_1000} position={[0, 0, 0]} />
+      <mesh geometry={nodes.Poker_Chip_2000.geometry} material={materials.Poker_chip_2000} position={[0, 0, 0]} />
     </group>
   )
 }

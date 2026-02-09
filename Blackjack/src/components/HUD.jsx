@@ -1,6 +1,6 @@
+import PlayerHand from "./PlayerHand";
+
 export default function HUD({
-  playerScore,
-  dealerScore,
   monney,
   bet,
   message,
@@ -11,16 +11,13 @@ export default function HUD({
   isGameFinished,
   hasBet
 }) {
-    let isHover21 = playerScore >= 21 ? true : false
+    const isBust = PlayerHand.getScore() 
 
   return (
-
     <div className="hud">
 
       <div className="hud-top">
-        <span>🧑 You : {playerScore}</span>
-        <span>🎩 Dealer : {dealerScore}</span>
-        <span>💸 Monney : {monney}</span>
+        <span>💸 Money : {monney}</span>
         <span>🎯 Bet : {bet}</span>
       </div>
 
@@ -32,14 +29,14 @@ export default function HUD({
 
       <div className="hud-actions">
         {
-            playerScore > 21 || isGameFinished? 
-            <button className="hud-btn replay" onClick={onRetry}>REPLAY</button> :
+            isBust || isGameFinished? 
+            <button className="hud-btn replay" onClick={onRetry}>CONTINUE</button> :
             hasBet ?
             <>
-            <button className={isHover21 || isStand ? "hud-btn-disable" : "hud-btn hit"} onClick={!isHover21 && !isStand ? onHit : function() {}}>
+            <button className={isBust || isStand ? "hud-btn-disable" : "hud-btn hit"} onClick={!isBust && !isStand ? onHit : function() {}}>
               HIT
             </button>
-            <button className={isHover21 || isStand ? "hud-btn-disable" : "hud-btn stand"} onClick={!isHover21 && !isStand ? onStand : function() {}}>
+            <button className={isBust || isStand ? "hud-btn-disable" : "hud-btn stand"} onClick={!isBust && !isStand ? onStand : function() {}}>
               STAND
             </button>
             </>

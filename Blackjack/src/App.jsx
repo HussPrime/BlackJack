@@ -23,9 +23,11 @@ const BlackJack = () => {
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
   const [deck, setDeck] = useState([])
+  const [hasWin, setHasWin] = useState(-1)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   useEffect(() => {
+    setHasWin(-1)
     setHasBet(false)
     if(bet > monney)
       setBet(monney)
@@ -37,7 +39,7 @@ const BlackJack = () => {
     
 
     if(monney == 0){
-      let x = 100 //Math.floor(Math.random() * 100) + 1
+      let x = 1000 //Math.floor(Math.random() * 100) + 1
       setMonney(x)
       setMessage(`Someone gave you ${x}`)
     }
@@ -68,14 +70,18 @@ const BlackJack = () => {
 
   const onHit = () => {
     PlayerHand.addCard(Cards.getRandomCard())
+    const newScore = PlayerHand.getScore()
+
     setPlayerCards([...PlayerHand.cards])
-    setPlayerScore(PlayerHand.getScore());
+    setPlayerScore(newScore)
     setDeck([...Cards.cards])
 
-    if (PlayerHand.getScore() > 21) {
-      setMessage("You lost");
+    if (newScore > 21) {
+      setMessage("You lost")
+      setIsGameFinished(true)
+      setStand(true) // IMPORTANT : bloque HIT/STAND
     }
-    else if (PlayerHand.getScore() == 21){
+    else if (newScore === 21) {
       setMessage("Dealer's turn")
       setStand(true)
       onStand()
@@ -83,10 +89,11 @@ const BlackJack = () => {
   }
 
   const onStand = async () => {
+    setStand(true)
+    
     await sleep(700)
 
     setMessage("Dealer's turn")
-    setStand(true)
 
     DealerHand.cards.forEach(c => {
       c.isHidden = false
@@ -106,14 +113,17 @@ const BlackJack = () => {
     const finalDealerScore = DealerHand.getScore()
 
     if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
+      setHasWin(1)
       setMessage("You won")
       await sleep(500)
       setMonney(m => m + 2 * bet)
     }
     else if (finalPlayerScore < finalDealerScore){
+      setHasWin(0)
       setMessage("You lost")
     }
     else{
+      setHasWin(2)
       setMessage("Tie")
       await sleep(500)
       setMonney(m => m + bet)
@@ -131,14 +141,16 @@ const BlackJack = () => {
       <HUD3D
         dealerCards={dealerCards}
         playerCards={playerCards}
+        dealerScore={dealerScore}
+        playerScore={playerScore}
         deck={deck}
         monney={monney}
         bet={bet}
         hasBet={hasBet}
+        isGameFinished={isGameFinished}
+        hasWin={hasWin}
       />
       <HUD 
-        playerScore={playerScore} 
-        dealerScore={dealerScore} 
         monney={monney} 
         message={message} 
         onHit={onHit} 
