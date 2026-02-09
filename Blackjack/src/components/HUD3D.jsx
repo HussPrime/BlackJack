@@ -19,7 +19,7 @@ export default function HUD3D({
     isGameFinished,
     hasWin
 }){
-  const font = "/Montserrat/static/Montserrat-Bold.ttf"
+  const font = "Montserrat/static/Montserrat-Bold.ttf"
 
   // Fonctions pour générer les piles de jetons
   function renderPlayerChips(amount, startPos = [0.25, 0, 0.15]) {

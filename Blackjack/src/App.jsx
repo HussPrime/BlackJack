@@ -39,7 +39,7 @@ const BlackJack = () => {
     
 
     if(monney == 0){
-      let x = 1000 //Math.floor(Math.random() * 100) + 1
+      let x = 100 //Math.floor(Math.random() * 100) + 1
       setMonney(x)
       setMessage(`Someone gave you ${x}`)
     }
