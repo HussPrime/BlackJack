@@ -23,9 +23,11 @@ const BlackJack = () => {
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
   const [deck, setDeck] = useState([])
+  const [hasWin, setHasWin] = useState(-1)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   useEffect(() => {
+    setHasWin(-1)
     setHasBet(false)
     if(bet > monney)
       setBet(monney)
@@ -111,14 +113,17 @@ const BlackJack = () => {
     const finalDealerScore = DealerHand.getScore()
 
     if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
+      setHasWin(1)
       setMessage("You won")
       await sleep(500)
       setMonney(m => m + 2 * bet)
     }
     else if (finalPlayerScore < finalDealerScore){
+      setHasWin(0)
       setMessage("You lost")
     }
     else{
+      setHasWin(2)
       setMessage("Tie")
       await sleep(500)
       setMonney(m => m + bet)
@@ -143,6 +148,7 @@ const BlackJack = () => {
         bet={bet}
         hasBet={hasBet}
         isGameFinished={isGameFinished}
+        hasWin={hasWin}
       />
       <HUD 
         monney={monney} 

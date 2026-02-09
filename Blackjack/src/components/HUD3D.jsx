@@ -16,9 +16,10 @@ export default function HUD3D({
     monney,
     bet,
     hasBet,
-    isGameFinished
+    isGameFinished,
+    hasWin
 }){
-  const font = "/Montserrat/static/Montserrat-Bold.ttf"
+  const font = "Montserrat/static/Montserrat-Bold.ttf"
 
   // Fonctions pour générer les piles de jetons
   function renderPlayerChips(amount, startPos = [0.25, 0, 0.15]) {
@@ -166,7 +167,7 @@ export default function HUD3D({
         amount={chip.amount}
         position={chip.position}
         delay={chip.delay}
-        from={[0.25, 0.875, 0.15]}
+        from={[0.25, 0, 0.15]}
       />
     ))
     }
@@ -234,7 +235,8 @@ export default function HUD3D({
                   card={c}
                   from={[0, -0.5, 0]}
                   rotation={[-Math.PI * 0.5, Math.PI, 0]}
-                  position={[0.75, 0+index*spacing, -0.5]}
+                  position={[0.75, 0.004+index*spacing, -0.5]}
+                  delay={index*50}
                 />
               )
             })
@@ -252,7 +254,7 @@ export default function HUD3D({
               scale={0.09}
             >
               {playerScore}
-              {playerScore > 21 ? <meshBasicMaterial color={[1, 0, 0]} /> : null}
+              {<meshBasicMaterial color={playerScore > 21 || hasWin == 0 ? [1, 0, 0] : hasWin == 1 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} />}
             </Text>
           }
           
@@ -264,7 +266,7 @@ export default function HUD3D({
               scale={0.09}
             >
               {dealerScore}
-              {dealerScore > 21 ? <meshBasicMaterial color={[1, 0, 0]} /> : null}
+              {<meshBasicMaterial color={dealerScore > 21 || hasWin == 1 ? [1, 0, 0] : hasWin == 0 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} /> }
             </Text>
           }
           
