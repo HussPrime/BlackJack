@@ -13,6 +13,7 @@ export default function HUD3D({
     dealerScore,
     playerScore,
     deck,
+    prevDeck,
     monney,
     bet,
     hasBet,
@@ -173,8 +174,10 @@ export default function HUD3D({
     }
   }
 
+  const prevDeckIds = new Set(prevDeck.map(c => c.id))
 
-    return(
+
+  return(
         <Canvas camera={{position: [0, 1.1, 0], fov: 75}} >
         <ambientLight intensity={2}/>
         <Environment preset="sunset"/>
@@ -228,15 +231,16 @@ export default function HUD3D({
           { // Afficher le tas
             deck.map((c, index) => {
               const spacing = 0.003; // distance entre les cartes
+              const isNew = !prevDeckIds.has(c.id)
 
               return(
                 <AnimatedPickUpCard
                   key={c.id}
                   card={c}
-                  from={[0, -0.5, 0]}
+                  from={isNew ? [0.75, -0.5, -0.5] : undefined}
                   rotation={[-Math.PI * 0.5, Math.PI, 0]}
                   position={[0.75, 0.004+index*spacing, -0.5]}
-                  delay={index*50}
+                  delay={isNew ? index * 50 : 0}
                 />
               )
             })
@@ -274,5 +278,5 @@ export default function HUD3D({
           {/*<Casino/>*/}
         </Suspense>
       </Canvas>
-    )
+  )
 }
