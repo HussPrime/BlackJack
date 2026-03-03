@@ -9,6 +9,7 @@ import Chip from "./Chip"
 import { AnimatedChip } from "./AnimatedChips"
 import CameraController from "./CameraController"
 import Dealer from "./Dealer"
+import Loader from "./Loader"
 
 export default function HUD3D({
     dealerCards,
@@ -223,8 +224,7 @@ export default function HUD3D({
 
       <CameraController />
 
-      <Suspense fallback={null}>
-        <Dealer/>
+      <Suspense fallback={<Loader/>}>
         <Blackjack_table position={[0, -0.8715, -1.15]}/>   
         { // Afficher la main du croupier
           dealerCards.map((c, index) => {
@@ -316,6 +316,7 @@ export default function HUD3D({
         }
         
         
+        <Dealer/>
         {/*<Casino/>*/}
       </Suspense>
     </Canvas>
