@@ -16,12 +16,15 @@ export default class DealerHand extends React.Component{
         let aces = 0
 
         this.cards.forEach(c => {
-            if (c.value === 11) {
-                aces++
-                score += 11
-            } else {
-                score += c.value
+            if(!c.isHidden){
+                if (c.card.value === 11) {
+                    aces++
+                    score += 11
+                } else {
+                    score += c.card.value
+                }
             }
+
         })
 
         // Tant que le score dépasse 21, on convertit les As (11 -> 1)
