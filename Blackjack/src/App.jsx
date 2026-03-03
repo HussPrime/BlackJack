@@ -23,6 +23,7 @@ const BlackJack = () => {
   const [restart, setRestart] = useState(false)
   const [isGameFinished, setIsGameFinished] = useState(false)
   const [deck, setDeck] = useState([])
+  const [prevDeck, setPrevDeck] = useState([])
   const [hasWin, setHasWin] = useState(-1)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -35,6 +36,7 @@ const BlackJack = () => {
     setStand(false)
     setIsGameFinished(false)
     Cards.setCards()
+    setPrevDeck(deck)
     setDeck([...Cards.cards])
     
 
@@ -74,6 +76,7 @@ const BlackJack = () => {
 
     setPlayerCards([...PlayerHand.cards])
     setPlayerScore(newScore)
+    setPrevDeck(deck)
     setDeck([...Cards.cards])
 
     if (newScore > 21) {
@@ -106,6 +109,7 @@ const BlackJack = () => {
       DealerHand.addCard(Cards.getRandomCard(), false)
       setDealerCards([...DealerHand.cards])
       setDealerScore(DealerHand.getScore())
+      setPrevDeck(deck)
       setDeck([...Cards.cards])
     }
 
@@ -144,15 +148,16 @@ const BlackJack = () => {
         dealerScore={dealerScore}
         playerScore={playerScore}
         deck={deck}
+        prevDeck={prevDeck}
         monney={monney}
         bet={bet}
         hasBet={hasBet}
         isGameFinished={isGameFinished}
         hasWin={hasWin}
+        message={message} 
       />
       <HUD 
         monney={monney} 
-        message={message} 
         onHit={onHit} 
         onStand={onStand} 
         isStand={stand} 

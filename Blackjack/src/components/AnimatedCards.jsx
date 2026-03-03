@@ -20,13 +20,14 @@ export const AnimatedPickUpCard = ({card, position, rotation, from = [0.75, 0, -
     }
   })
 
-  return (
-    <animated.group
-      position={spring.position}
-      rotation={spring.rotation}
-      scale={spring.scale}
-    >
+return (
+  <animated.group
+    position={spring.position}
+    scale={spring.scale}
+  >
+    <animated.group rotation={spring.rotation}>
       <Card_Deck card={card} />
     </animated.group>
-  )
+  </animated.group>
+)
 }
