@@ -309,4 +309,8 @@ body {
     font-size: 14px;
   }
 
+  .camera-hint{
+    display: none;
+  }
+
 }

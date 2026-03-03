@@ -116,21 +116,32 @@ const BlackJack = () => {
     const finalPlayerScore = PlayerHand.getScore()
     const finalDealerScore = DealerHand.getScore()
 
-    if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
+    // Check bj 
+    console.log(`finalPlayerScore = ${finalPlayerScore} | finalDealerScore = ${finalDealerScore} | PlayerHand.cards.length = ${PlayerHand.cards.length}`)
+    if(finalPlayerScore == 21 && finalDealerScore != 21 && PlayerHand.cards.length == 2){
+      setHasWin(1)
+      setMessage("BlackJack")
+      await sleep(500)
+      setMonney(m => m + 2.5 * bet)
+      console.log("blackjack")
+    }
+    else{
+      if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
       setHasWin(1)
       setMessage("You won")
       await sleep(500)
       setMonney(m => m + 2 * bet)
-    }
-    else if (finalPlayerScore < finalDealerScore){
-      setHasWin(0)
-      setMessage("You lost")
-    }
-    else{
-      setHasWin(2)
-      setMessage("Tie")
-      await sleep(500)
-      setMonney(m => m + bet)
+      }
+      else if (finalPlayerScore < finalDealerScore){
+        setHasWin(0)
+        setMessage("You lost")
+      }
+      else{
+        setHasWin(2)
+        setMessage("Tie")
+        await sleep(500)
+        setMonney(m => m + bet)
+      }
     }
 
     setIsGameFinished(true)
