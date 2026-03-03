@@ -9,26 +9,37 @@ Title: Blackjack Table
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
+import { useEffect } from 'react'
 
 export default function Model(props) {
   const { nodes, materials } = useGLTF('blackjack_table/blackjack_table.gltf')
+
+  useEffect(() => {
+    if (materials) {
+      Object.values(materials).forEach(material => {
+        material.roughness = 1      // très mat
+        material.metalness = 0       // pas de reflet
+      })
+    }
+  }, [materials])
+
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={1.704}>
         <group rotation={[Math.PI / 2, 0, 0]} scale={0.001}>
-          <mesh geometry={nodes['Rectangle001_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 504.046, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Rectangle004_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 508.561, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Rectangle005_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 504.572, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Rectangle006_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 0, 249.047]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Shape001_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 301.429, 249.047]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Shape002_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 100.548, 249.047]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line003_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-0.015, 64.552, 1071.126]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line004_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-315.259, 64.552, 982.723]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line005_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-540.969, 64.552, 748.752]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line006_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-611.736, 64.552, 503.525]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line007_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[611.564, 64.552, 503.525]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line008_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[540.798, 64.552, 748.752]} rotation={[-Math.PI / 2, 0, 0]} />
-          <mesh geometry={nodes['Line009_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[315.088, 64.552, 982.723]} rotation={[-Math.PI / 2, 0, 0]} />
+          <mesh geometry={nodes['Rectangle001_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 504.046, 0]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Rectangle004_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 508.561, 0]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Rectangle005_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 504.572, 0]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Rectangle006_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 0, 249.047]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Shape001_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 301.429, 249.047]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Shape002_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[0, 100.548, 249.047]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line003_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-0.015, 64.552, 1071.126]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line004_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-315.259, 64.552, 982.723]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line005_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-540.969, 64.552, 748.752]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line006_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-611.736, 64.552, 503.525]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line007_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[611.564, 64.552, 503.525]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line008_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[540.798, 64.552, 748.752]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
+          <mesh geometry={nodes['Line009_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[315.088, 64.552, 982.723]} rotation={[-Math.PI / 2, 0, 0]}><meshStandardMaterial map={materials['01_-_Default'].map} roughness={1} metalness={0} /></mesh>
         </group>
       </group>
     </group>
