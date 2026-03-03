@@ -25,13 +25,19 @@ Le projet inclut un système de mise dynamique, une interface utilisateur élég
 git clone https://github.com/MazyadH1/blackjack.git
 ```
 
-2. Installe les dépendances :
+2. Se déplacer dans le dossier :
+
+```bash
+cd ./Blackjack
+```
+
+3. Installe les dépendances :
 
 ```bash
 npm install
 ```
 
-3. Lance le projet :
+4. Lance le projet :
 
 ```bash
 npm run dev
