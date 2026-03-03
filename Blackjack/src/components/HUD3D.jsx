@@ -25,7 +25,7 @@ export default function HUD3D({
     message
 }){
   const font = "Montserrat/static/Montserrat-Bold.ttf"
-  const parquet = useLoader(TextureLoader, "/textures/parquet.avif")
+  const parquet = useLoader(TextureLoader, `${import.meta.env.BASE_URL}textures/parquet.avif`)
   parquet.wrapS = parquet.wrapT = RepeatWrapping
   parquet.repeat.set(10, 10)
 
