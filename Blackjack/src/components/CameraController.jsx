@@ -46,7 +46,7 @@ export default function CameraController() {
   return <OrbitControls 
     ref={controlsRef}           
     minPolarAngle={0}
-    maxPolarAngle={0.7}
+    maxPolarAngle={1.2}
 
     minAzimuthAngle={-Math.PI / 4}
     maxAzimuthAngle={Math.PI / 4}
