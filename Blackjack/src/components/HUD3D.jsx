@@ -1,5 +1,5 @@
 import { Canvas, useLoader } from "@react-three/fiber"
-import { Suspense, useMemo } from "react"
+import { Suspense, useMemo, useRef } from "react"
 import { TextureLoader, RepeatWrapping } from "three"
 import { Environment, Text } from "@react-three/drei"
 import Blackjack_table from "./Blackjack_table"
@@ -23,7 +23,8 @@ export default function HUD3D({
     hasBet,
     isGameFinished,
     hasWin,
-    message
+    message,
+    cameraRef
 }){
   const font = "Montserrat/static/Montserrat-Bold.ttf"
   const parquet = useLoader(TextureLoader, `${import.meta.env.BASE_URL}textures/parquet.avif`)
@@ -222,7 +223,7 @@ export default function HUD3D({
         />
       </mesh>
 
-      <CameraController />
+      <CameraController ref={cameraRef} />
 
       <Suspense fallback={<Loader/>}>
         <Blackjack_table position={[0, -0.8715, -1.15]}/>   
