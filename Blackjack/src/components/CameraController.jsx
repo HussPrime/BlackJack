@@ -1,57 +1,37 @@
-import { useEffect, useRef } from "react"
+import { forwardRef, useImperativeHandle } from "react"
 import { OrbitControls } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
-import { gsap } from "gsap"
 
-export default function CameraController() {
-    const controlsRef = useRef()
+const CameraController = forwardRef((props, ref) => {
   const { camera } = useThree()
 
-  // Stocke la position initiale (au premier render)
-  const initialPosition = useRef(null)
-  const initialTarget = useRef(null)
-
-  useEffect(() => {
-    if (!initialPosition.current) {
-      initialPosition.current = camera.position.clone()
-    }
-    if (controlsRef.current && !initialTarget.current) {
-      initialTarget.current = controlsRef.current.target.clone()
-    }
-  }, [camera])
-
-  // Reset à la position initiale
+  // Fonction de reset
   const resetCamera = () => {
-    if (initialPosition.current) {
-      camera.position.copy(initialPosition.current)
-    }
-
-    if (controlsRef.current && initialTarget.current) {
-      controlsRef.current.target.copy(initialTarget.current)
-      controlsRef.current.update()
-    }
+    camera.position.set(0, 1.1, 0)
+    camera.lookAt(0, 0, -1)
   }
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key.toLowerCase() === "r") {
-        resetCamera()
-      }
-    }
+  // On expose resetCamera via la ref
+  useImperativeHandle(ref, () => ({
+    resetCamera
+  }))
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [])
+  return (
+    <OrbitControls 
+      minPolarAngle={0}
+      maxPolarAngle={1.2}
 
-  return <OrbitControls 
-    ref={controlsRef}           
-    minPolarAngle={0}
-    maxPolarAngle={1.2}
+      minAzimuthAngle={-Math.PI / 4}
+      maxAzimuthAngle={Math.PI / 4}
 
-    minAzimuthAngle={-Math.PI / 4}
-    maxAzimuthAngle={Math.PI / 4}
+      minDistance={0.55}
+      maxDistance={2}
 
-    minDistance={0.55}
-    maxDistance={2}
-  />
-}
+      enablePan={false}
+      enableDamping
+      dampingFactor={0.1}
+    />
+  )
+})
+
+export default CameraController

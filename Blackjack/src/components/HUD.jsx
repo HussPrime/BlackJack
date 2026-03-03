@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import PlayerHand from "./PlayerHand";
 
 export default function HUD({
@@ -9,7 +9,8 @@ export default function HUD({
   onRetry,
   isStand,
   isGameFinished,
-  hasBet
+  hasBet,
+  onResetCamera
 }) {
   const [showRules, setShowRules] = useState(false)
   const isBust = PlayerHand.getScore() 
@@ -43,9 +44,13 @@ export default function HUD({
 
     </div>
 
-    <div className="camera-hint">
+    {/* <div className="camera-hint">
       Press <strong>R</strong> to reset camera
-    </div>
+    </div> */}
+    
+    <button className="reset-camera-btn" onClick={onResetCamera}>
+      Reset Camera
+    </button>
 
     {/* BOUTON RULES FIXE TOUJOURS VISIBLE */}
       <button

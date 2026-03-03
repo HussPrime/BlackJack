@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import Game from "./components/Game"
 import DealerHand from "./components/DealerHand"
@@ -26,6 +26,7 @@ const BlackJack = () => {
   const [prevDeck, setPrevDeck] = useState([])
   const [hasWin, setHasWin] = useState(-1)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const cameraRef = useRef()
 
   useEffect(() => {
     setHasWin(-1)
@@ -166,6 +167,7 @@ const BlackJack = () => {
         isGameFinished={isGameFinished}
         hasWin={hasWin}
         message={message} 
+        cameraRef={cameraRef}
       />
       <HUD 
         monney={monney} 
@@ -176,6 +178,7 @@ const BlackJack = () => {
         isGameFinished={isGameFinished} 
         hasBet={hasBet}
         bet={bet}
+        onResetCamera={() => cameraRef.current?.resetCamera()}
       />
       
       {
