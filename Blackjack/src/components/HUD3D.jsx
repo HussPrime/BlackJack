@@ -1,5 +1,5 @@
 import { Canvas, useLoader } from "@react-three/fiber"
-import { Suspense } from "react"
+import { Suspense, useMemo } from "react"
 import { TextureLoader, RepeatWrapping } from "three"
 import { Environment, Text } from "@react-three/drei"
 import Blackjack_table from "./Blackjack_table"
@@ -72,33 +72,29 @@ export default function HUD3D({
     ))
   }
 
-  function renderDealerChips(
-    startPos = [-0.8, 0, -0.6],
-    stacksPerRow = 3,
-    rows = 2,
-    xSpacing = 0.14,
-    zSpacing = 0.18
-  ) {
+  function renderDealerChips() {
+
+  const chips = useMemo(() => {
     const chipValues = [10000, 2000, 1000, 500, 200, 100]
-    const chips = []
+    const chipsArray = []
     let index = 0
 
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < stacksPerRow; col++) {
-        const baseX = startPos[0] + col * xSpacing
-        const baseZ = startPos[2] + row * zSpacing
+    for (let row = 0; row < 2; row++) {
+      for (let col = 0; col < 3; col++) {
+        const baseX = -0.8 + col * 0.14
+        const baseZ = -0.6 + row * 0.18
         let yOffset = 0
 
         for (let value of chipValues) {
           const chipCount = Math.floor(Math.random() * 8) + 4
 
           for (let i = 0; i < chipCount; i++) {
-            chips.push({
+            chipsArray.push({
               id: `dealer-chip-${index}`,
               amount: value,
               position: [
                 baseX + (Math.random() - 0.5) * 0.015,
-                startPos[1] + yOffset,
+                yOffset,
                 baseZ + (Math.random() - 0.5) * 0.015
               ],
               delay: index * 10
@@ -111,15 +107,18 @@ export default function HUD3D({
       }
     }
 
-    return chips.map(chip => (
-      <AnimatedChip
-        key={chip.id}
-        amount={chip.amount}
-        position={chip.position}
-        delay={chip.delay}
-      />
-    ))
-  }
+    return chipsArray
+  }, [])
+
+  return chips.map(chip => (
+    <AnimatedChip
+      key={chip.id}
+      amount={chip.amount}
+      position={chip.position}
+      delay={chip.delay}
+    />
+  ))
+}
 
   function renderBetChips(amount, startPos = [0, 0, 0]) {
     if(!isGameFinished){
