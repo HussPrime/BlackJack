@@ -6,21 +6,29 @@ Command: npx gltfjsx@6.5.3 .\card_deck.gltf
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export default function Model({card, position, rotation, props}) {
+export default function Model({card, position, rotation, ...props}) {
   const { nodes, materials } = useGLTF('card_deck/card_deck.gltf')
 
   if(card){
-    return(
-      <group position={position} rotation={rotation} scale={[0.003, 0.0025, 0.003]} {...props}>
-        {
-          card.meshes.map((m, i) => (
-            <mesh
-            key={i}
-              geometry={nodes[m.mesh].geometry}
-              material={materials[m.materials]}
-            />
-          ))
-        }
+    return (
+      <group position={position} rotation={rotation} {...props}>
+
+        {/* Pivot global */}
+        <group scale={[0.003, 0.0025, 0.003]}>
+
+          {/* Centre visuel ajustable */}
+          <group position={[0, 0, -0.5]}>
+
+            {card.meshes.map((m, i) => (
+              <mesh
+                key={i}
+                geometry={nodes[m.mesh].geometry}
+                material={materials[m.materials]}
+              />
+            ))}
+
+          </group>
+        </group>
       </group>
     )
   }

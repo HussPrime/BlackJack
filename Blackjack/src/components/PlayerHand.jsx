@@ -11,16 +11,25 @@ export default class PlayerHand extends React.Component{
         this.cards = []
     }
 
-    static getScore(){
+    static getScore() {
         let score = 0
-        let tmp = [...this.cards]
-        tmp.sort((a, b) => a > b )
-        tmp.forEach(c => {
-            if(c.value == 11 && score + 11 > 21)
-                score += 1
-            else 
+        let aces = 0
+
+        this.cards.forEach(c => {
+            if (c.value === 11) {
+                aces++
+                score += 11
+            } else {
                 score += c.value
+            }
         })
+
+        // Tant que le score dépasse 21, on convertit les As (11 -> 1)
+        while (score > 21 && aces > 0) {
+            score -= 10
+            aces--
+        }
+
         return score
     }
 }
