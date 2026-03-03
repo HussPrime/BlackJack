@@ -154,10 +154,10 @@ const BlackJack = () => {
         hasBet={hasBet}
         isGameFinished={isGameFinished}
         hasWin={hasWin}
+        message={message} 
       />
       <HUD 
         monney={monney} 
-        message={message} 
         onHit={onHit} 
         onStand={onStand} 
         isStand={stand} 

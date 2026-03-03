@@ -4,7 +4,6 @@ import PlayerHand from "./PlayerHand";
 export default function HUD({
   monney,
   bet,
-  message,
   onHit,
   onStand,
   onRetry,
@@ -24,12 +23,6 @@ export default function HUD({
         <span>🎯 Bet : {bet}</span>
       </div>
 
-      {message && (
-        <div className="hud-message">
-          {message}
-        </div>
-      )}
-
       <div className="hud-actions">
         {
             isGameFinished? 
@@ -48,6 +41,10 @@ export default function HUD({
         }
       </div>
 
+    </div>
+
+    <div className="camera-hint">
+      Press <strong>R</strong> to reset camera
     </div>
 
     {/* BOUTON RULES FIXE TOUJOURS VISIBLE */}

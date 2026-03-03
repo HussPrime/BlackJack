@@ -1,11 +1,14 @@
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useLoader } from "@react-three/fiber"
 import { Suspense } from "react"
-import { Environment, OrbitControls, Text } from "@react-three/drei"
+import { TextureLoader, RepeatWrapping } from "three"
+import { Environment, Text } from "@react-three/drei"
 import Blackjack_table from "./Blackjack_table"
 import { AnimatedPickUpCard } from "./AnimatedCards"
 import Card_Deck from "./Card_deck"
 import Chip from "./Chip"
 import { AnimatedChip } from "./AnimatedChips"
+import CameraController from "./CameraController"
+import Dealer from "./Dealer"
 
 export default function HUD3D({
     dealerCards,
@@ -18,9 +21,13 @@ export default function HUD3D({
     bet,
     hasBet,
     isGameFinished,
-    hasWin
+    hasWin,
+    message
 }){
   const font = "Montserrat/static/Montserrat-Bold.ttf"
+  const parquet = useLoader(TextureLoader, "/textures/parquet.avif")
+  parquet.wrapS = parquet.wrapT = RepeatWrapping
+  parquet.repeat.set(10, 10)
 
   // Fonctions pour générer les piles de jetons
   function renderPlayerChips(amount, startPos = [0.25, 0, 0.15]) {
@@ -178,105 +185,140 @@ export default function HUD3D({
 
 
   return(
-        <Canvas camera={{position: [0, 1.1, 0], fov: 75}} >
-        <ambientLight intensity={2}/>
-        <Environment preset="sunset"/>
-        {/*
-          <spotLight 
-          color={[255, 0, 0]}
-          intensity={1.5}
-          angle={0.6}
-          penumbra={0.5}
-          position={[5, 5, 0]}
-          castShadow
-          shadow-bias={-0.0001}
-          />
-          */}
+    <Canvas camera={{position: [0, 1.1, 0], fov: 75}} >
+        
+      <ambientLight intensity={0.1}/>
+      <spotLight 
+        color={[255, 255, 255]}
+        intensity={.03}
+        angle={1.5}
+        penumbra={0.2}
+        castShadow
+      />
+      {/* <Environment preset="sunset"/> */}
+      {/*
+        <spotLight 
+        color={[255, 0, 0]}
+        intensity={1.5}
+        angle={0.6}
+        penumbra={0.5}
+        position={[5, 5, 0]}
+        castShadow
+        shadow-bias={-0.0001}
+        />
+        */}
+       
 
-        {<OrbitControls/>}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, -0.88, 0]}
+        receiveShadow
+      >
+        <planeGeometry args={[25, 25]} />
+        <meshStandardMaterial
+          map={parquet}
+          roughness={0.9}
+          metalness={0}
+        />
+      </mesh>
 
-        <Suspense fallback={null}>
-          <Blackjack_table position={[0, -0.8715, -1.15]}/>   
-          { // Afficher la main du dealer
-            dealerCards.map((c, index) => {
-            const spacing = 0.15
-            const totalCards = dealerCards.length
-            const offset = ((totalCards - 1) * spacing) / 2
+      <CameraController />
 
-            return (
+      <Suspense fallback={null}>
+        <Dealer/>
+        <Blackjack_table position={[0, -0.8715, -1.15]}/>   
+        { // Afficher la main du croupier
+          dealerCards.map((c, index) => {
+          const spacing = 0.15
+          const totalCards = dealerCards.length
+          const offset = ((totalCards - 1) * spacing) / 2
+
+          return (
+            <AnimatedPickUpCard
+              key={c.card.id}
+              card={c.card}
+              rotation={c.isHidden ? [-Math.PI*0.5, Math.PI, 0] : [-Math.PI*0.5, 0, 0]}
+              position={[index * spacing - offset, 0.00111, -0.5]}
+            />
+          )
+        })
+        }
+        { // Afficher la main du joueur
+          playerCards.map((c, index) => {
+          const spacing = 0.03; // distance entre les cartes
+          const totalCards = playerCards.length;
+          const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
+
+          return(<AnimatedPickUpCard
+            key={c.id}
+            card={c}
+            position={[index * spacing - offset -0.006, 0.00111+index*0.0001, 0.285]}
+            rotation={[-Math.PI * 0.5, 0, 0]}
+          />)
+          
+          })
+        }
+        { // Afficher le tas
+          deck.map((c, index) => {
+            const spacing = 0.003; // distance entre les cartes
+            const isNew = !prevDeckIds.has(c.id)
+
+            return(
               <AnimatedPickUpCard
-                key={c.card.id}
-                card={c.card}
-                rotation={c.isHidden ? [-Math.PI*0.5, Math.PI, 0] : [-Math.PI*0.5, 0, 0]}
-                position={[index * spacing - offset, 0, -0.5]}
+                key={c.id}
+                card={c}
+                from={isNew ? [0.75, -0.5, -0.5] : undefined}
+                rotation={[-Math.PI * 0.5, Math.PI, 0]}
+                position={[0.75, 0.004+index*spacing, -0.5]}
+                delay={isNew ? index * 50 : 0}
               />
             )
           })
-          }
-          { // Afficher la main du joueur
-            playerCards.map((c, index) => {
-            const spacing = 0.03; // distance entre les cartes
-            const totalCards = playerCards.length;
-            const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
+        }
 
-            return(<AnimatedPickUpCard
-              key={c.id}
-              card={c}
-              position={[index * spacing - offset, 0+index*0.0001, 0.285]}
-              rotation={[-Math.PI * 0.5, 0, 0]}
-            />)
-            
-            })
-          }
-          { // Afficher le tas
-            deck.map((c, index) => {
-              const spacing = 0.003; // distance entre les cartes
-              const isNew = !prevDeckIds.has(c.id)
+        {renderPlayerChips(hasBet ? monney : monney-bet)}
+        {renderDealerChips()}
+        {renderBetChips(bet)}
 
-              return(
-                <AnimatedPickUpCard
-                  key={c.id}
-                  card={c}
-                  from={isNew ? [0.75, -0.5, -0.5] : undefined}
-                  rotation={[-Math.PI * 0.5, Math.PI, 0]}
-                  position={[0.75, 0.004+index*spacing, -0.5]}
-                  delay={isNew ? index * 50 : 0}
-                />
-              )
-            })
-          }
+        { // Afficher le score du joueur
+          <Text 
+            font={font} 
+            position={[0, 0, 0.495]} 
+            rotation={[-Math.PI*0.5, 0, 0]}
+            scale={0.09}
+          >
+            {playerScore}
+            {<meshBasicMaterial color={playerScore > 21 || hasWin == 0 ? [1, 0, 0] : hasWin == 1 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} />}
+          </Text>
+        }
+        
+        { // Afficher le score du dealer
+          <Text 
+            font={font} 
+            position={[0, 0, -0.67]} 
+            rotation={[-Math.PI*0.5, 0, 0]}
+            scale={0.09}
+          >
+            {dealerScore}
+            {<meshBasicMaterial color={dealerScore > 21 || hasWin == 1 ? [1, 0, 0] : hasWin == 0 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} /> }
+          </Text>
+        }
 
-          {renderPlayerChips(hasBet ? monney : monney-bet)}
-          {renderDealerChips()}
-          {renderBetChips(bet)}
-
-          { // Afficher le score du joueur
-            <Text 
-              font={font} 
-              position={[0, 0, 0.495]} 
-              rotation={[-Math.PI*0.5, 0, 0]}
-              scale={0.09}
-            >
-              {playerScore}
-              {<meshBasicMaterial color={playerScore > 21 || hasWin == 0 ? [1, 0, 0] : hasWin == 1 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} />}
-            </Text>
-          }
-          
-          { // Afficher le score du dealer
-            <Text 
-              font={font} 
-              position={[0, 0, -0.67]} 
-              rotation={[-Math.PI*0.5, 0, 0]}
-              scale={0.09}
-            >
-              {dealerScore}
-              {<meshBasicMaterial color={dealerScore > 21 || hasWin == 1 ? [1, 0, 0] : hasWin == 0 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} /> }
-            </Text>
-          }
-          
-          
-          {/*<Casino/>*/}
-        </Suspense>
-      </Canvas>
+        { // Afficher le message
+          <Text 
+            font={font} 
+            position={[0, 0, -0.2]} 
+            rotation={[-Math.PI*0.5, 0, 0]}
+            scale={0.09}
+          >
+            {message}
+            {<meshBasicMaterial color={ hasWin == 0 ? [1, 0, 0] : hasWin == 1 ? [0, 1, 0] : hasWin == 2 ? [1, 1, 0] : [1, 1, 1]} />}
+          </Text>
+        }
+        
+        
+        {/*<Casino/>*/}
+      </Suspense>
+    </Canvas>
   )
 }
