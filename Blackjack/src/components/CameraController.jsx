@@ -29,7 +29,7 @@ const CameraController = forwardRef((props, ref) => {
 
       enablePan={false}
       enableDamping
-      dampingFactor={0.1}
+      dampingFactor={0.125}
     />
   )
 })
