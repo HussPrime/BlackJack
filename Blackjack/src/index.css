@@ -181,6 +181,208 @@ body {
     0 0 16px rgba(0,0,0,0.8);
 }
 
+/* ---------- NEW ACTION BUTTONS ---------- */
+
+.hud-btn.double {
+  border: 2px solid #3498db;
+}
+
+.hud-btn.split {
+  border: 2px solid #9b59b6;
+}
+
+.hud-btn.surrender {
+  border: 2px solid #e67e22;
+}
+
+.hud-btn.hint-btn {
+  border: 2px solid #1abc9c;
+  font-size: clamp(12px, 1.6vw, 15px);
+}
+
+.hud-btn.insurance-yes {
+  border: 2px solid #2ecc71;
+}
+
+.hud-btn.insurance-no {
+  border: 2px solid #e74c3c;
+}
+
+/* ---------- INSURANCE PROMPT ---------- */
+.insurance-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid gold;
+  border-radius: 14px;
+  padding: 14px 20px;
+  backdrop-filter: blur(6px);
+}
+
+.insurance-label {
+  font-size: clamp(13px, 1.8vw, 16px);
+  font-weight: 600;
+  color: gold;
+  text-align: center;
+}
+
+.insurance-btns {
+  display: flex;
+  gap: 14px;
+}
+
+/* ---------- HINT BADGE ---------- */
+.hint-badge {
+  background: rgba(26, 188, 156, 0.2);
+  border: 1.5px solid #1abc9c;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: clamp(12px, 1.6vw, 15px);
+  color: #1abc9c;
+  backdrop-filter: blur(4px);
+  text-align: center;
+}
+
+/* ---------- SPLIT INDICATOR ---------- */
+.split-indicator {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.split-hand-badge {
+  padding: 5px 14px;
+  border-radius: 16px;
+  font-size: clamp(12px, 1.5vw, 14px);
+  font-weight: 700;
+  border: 2px solid #9b59b6;
+  color: #d7aeff;
+  background: rgba(155, 89, 182, 0.15);
+}
+
+.split-hand-badge.active {
+  border-color: gold;
+  color: gold;
+  background: rgba(255, 215, 0, 0.15);
+}
+
+.split-hand-badge.busted {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.15);
+}
+
+/* ---------- STATS TOGGLE BUTTON ---------- */
+.stats-toggle-btn {
+  position: fixed;
+  bottom: 62px;
+  right: 20px;
+  z-index: 9999;
+  padding: 10px 16px;
+  background: rgba(0,0,0,0.65);
+  color: white;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(52, 152, 219, 0.35);
+  transition: 0.2s ease;
+}
+
+.stats-toggle-btn:hover {
+  background: rgba(52, 152, 219, 0.25);
+  transform: scale(1.04);
+}
+
+/* ---------- STATS PANEL ---------- */
+.stats-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 110px;
+  z-index: 9998;
+  width: clamp(260px, 30vw, 340px);
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: linear-gradient(145deg, rgba(10,30,50,0.95), rgba(5,18,30,0.95));
+  border: 2px solid #3498db;
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgba(52, 152, 219, 0.3);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+.stats-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #3498db;
+  margin: 0 0 14px;
+}
+
+.stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: clamp(11px, 1.4vw, 13px);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.stats-row.stats-note {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.stats-label {
+  color: rgba(255,255,255,0.7);
+}
+
+.stats-value {
+  font-weight: 600;
+  color: white;
+}
+
+.stats-value.green { color: #2ecc71; }
+.stats-value.red   { color: #e74c3c; }
+.stats-value.gold  { color: gold; }
+
+.stats-reset-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 9px;
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1.5px solid #e74c3c;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.stats-reset-btn:hover {
+  background: rgba(231, 76, 60, 0.35);
+}
+
+.stats-reset-btn.confirm {
+  background: rgba(231, 76, 60, 0.5);
+  border-color: #ff6b6b;
+  color: white;
+}
+
 /* ---------- RULES BUTTON ---------- */
 .rules-floating-btn {
   position: fixed;
@@ -433,6 +635,29 @@ body {
   .camera-hint {
     display: none;
   }
+
+  /* STATS PANEL */
+  .stats-panel {
+    right: 8px;
+    bottom: 100px;
+    width: calc(100vw - 16px);
+    max-width: 360px;
+    max-height: 55vh;
+    padding: 14px;
+  }
+
+  .stats-toggle-btn {
+    bottom: auto;
+    top: calc(env(safe-area-inset-top) + 56px);
+    right: 12px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* INSURANCE PROMPT */
+  .insurance-prompt {
+    padding: 10px 14px;
+  }
 }
 
 /* ---------- SMALL PHONES ---------- */
@@ -459,5 +684,546 @@ body {
 
   .rules-container {
     padding: 18px;
+  }
+}
+
+/* ================================================================
+   CASINO LOBBY
+   ================================================================ */
+.casino-lobby {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 24px;
+  background: radial-gradient(ellipse at center, #0b3b2e 0%, #051a12 100%);
+}
+
+.casino-title {
+  font-size: clamp(40px, 10vw, 80px);
+  font-weight: 900;
+  color: gold;
+  text-shadow: 0 0 30px rgba(255,215,0,0.5);
+  letter-spacing: 6px;
+}
+
+.casino-subtitle {
+  color: rgba(255,255,255,0.55);
+  font-size: clamp(13px, 2vw, 18px);
+  letter-spacing: 2px;
+}
+
+.casino-games {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.casino-game-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 48px;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid gold;
+  border-radius: 18px;
+  color: white;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: clamp(15px, 2.5vw, 20px);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+  min-width: 160px;
+}
+
+.casino-game-btn:hover {
+  background: rgba(255,215,0,0.12);
+  transform: translateY(-5px);
+  box-shadow: 0 0 35px rgba(255,215,0,0.45);
+}
+
+.casino-game-icon {
+  font-size: clamp(40px, 8vw, 64px);
+}
+
+/* ── Back to lobby button (inside BlackJack) ── */
+.lobby-back-btn {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 10px 22px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  color: white;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow: 0 0 12px rgba(52,152,219,0.35);
+}
+
+.lobby-back-btn:hover {
+  background: rgba(52,152,219,0.2);
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* ================================================================
+   ROULETTE PAGE
+   ================================================================ */
+.roulette-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 12px 8px 32px;
+  background: radial-gradient(ellipse at center, #0b3b2e 0%, #051a12 100%);
+  overflow-y: auto;
+  gap: 8px;
+}
+
+.roulette-hud-top {
+  position: relative !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 auto;
+}
+
+.roulette-message {
+  font-size: clamp(13px, 2.5vw, 17px);
+  font-weight: 700;
+  color: gold;
+  text-align: center;
+  min-height: 22px;
+  text-shadow: 0 0 8px rgba(255,215,0,0.5);
+}
+
+/* ── History balls ── */
+.roulette-history {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 420px;
+}
+
+.r-hist-ball {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  border: 1.5px solid rgba(255,255,255,0.25);
+}
+
+.r-hist-red   { background: #b03020; }
+.r-hist-black { background: #222; }
+.r-hist-green { background: #1b6e1b; }
+
+/* ── Wheel ── */
+.roulette-wheel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(280px, 78vw);
+  height: min(280px, 78vw);
+  flex-shrink: 0;
+}
+
+.wheel-indicator {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 18px solid gold;
+  filter: drop-shadow(0 0 5px gold);
+}
+
+.roulette-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.5);
+}
+
+/* ── Betting table ── */
+.roulette-table {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.r-zero-row {
+  display: flex;
+  justify-content: center;
+}
+
+.r-zero-row .r-num {
+  width: 52px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.r-numbers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.r-num-row {
+  display: flex;
+  gap: 2px;
+}
+
+/* Number cells */
+.r-num {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  font-size: clamp(9px, 2.2vw, 12px);
+  font-weight: 700;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: opacity 0.15s, transform 0.15s;
+  padding: 0;
+}
+
+.r-num:hover { opacity: 0.78; transform: scale(1.06); }
+
+.r-red   { background: #8b2020; }
+.r-black { background: #1a1a1a; }
+.r-green { background: #1b6e1b; }
+
+.r-num.r-result {
+  box-shadow: 0 0 0 3px gold, 0 0 14px gold;
+  z-index: 2;
+}
+
+.r-num.r-winning {
+  box-shadow: 0 0 0 2px #2ecc71;
+}
+
+.r-num.r-has-bet {
+  border: 2px solid gold;
+}
+
+/* Outside bet rows */
+.r-outside-row {
+  display: flex;
+  gap: 2px;
+}
+
+.r-outside {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  font-size: clamp(8px, 2vw, 11px);
+  font-weight: 700;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: white;
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.22);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+  padding: 0;
+}
+
+.r-outside:hover { background: rgba(255,255,255,0.15); }
+
+.r-red-btn   { background: rgba(139, 32, 32, 0.55); border-color: #b03020; }
+.r-black-btn { background: rgba(20, 20, 20, 0.85);  border-color: #555; }
+
+.r-outside.r-winning { box-shadow: 0 0 0 2px #2ecc71; }
+.r-outside.r-has-bet { border: 2px solid gold; }
+
+/* Chip overlay */
+.r-chip {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+  background: gold;
+  color: black;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 8px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+
+/* ── Roulette controls ── */
+.roulette-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.roulette-chip-row {
+  position: relative !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  margin: 0 auto;
+}
+
+.roulette-btns {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── Sketchfab background ── */
+.r-sketchfab-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.28;
+  filter: blur(1px) saturate(1.4);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure roulette-page content sits above iframe */
+.roulette-page > *:not(.r-sketchfab-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Stats button positioning for roulette ── */
+.r-stats-btn {
+  top: 20px;
+  bottom: auto;
+  right: 20px;
+}
+
+/* ── Roulette stats panel (reuse blackjack stats vars) ── */
+.r-stats-panel {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 9998;
+  width: clamp(220px, 28vw, 300px);
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 18px;
+  background: linear-gradient(145deg, rgba(10,30,50,0.97), rgba(5,18,30,0.97));
+  border: 2px solid #3498db;
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgba(52,152,219,0.3);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease;
+}
+
+.r-stats-title {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3498db;
+  margin: 0 0 12px;
+}
+
+/* ── Ball orbit ── */
+.r-ball-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.r-ball {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff 0%, #ccc 60%, #999 100%);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.7), 0 0 4px rgba(255,255,255,0.6);
+  top: -5.5px;
+  /* orbit radius = 88% of wheel radius = 44% of wrapper size */
+  left: calc(min(280px, 78vw) * -0.44);
+}
+
+/* ── Chip selector ── */
+.r-chip-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.r-chip-btn {
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 800;
+  font-family: 'Montserrat', Arial, sans-serif;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.r-chip-btn:hover { transform: translateY(-3px); }
+.r-chip-selected  { box-shadow: 0 0 0 3px gold, 0 4px 12px rgba(0,0,0,0.6) !important; transform: translateY(-2px); }
+
+/* ── Bet chip shown on a cell ── */
+.r-bet-chip {
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 3px;
+  border-radius: 9px;
+  font-size: 8px;
+  font-weight: 800;
+  font-family: 'Montserrat', Arial, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0,0,0,0.7);
+}
+
+.r-bet-chip-won {
+  box-shadow: 0 0 0 2px #2ecc71, 0 0 8px #2ecc71;
+  animation: chipPulse 0.6s ease 2;
+}
+
+@keyframes chipPulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.4); }
+}
+
+/* ── Six-line zone between rows ── */
+.r-sixline-zone {
+  height: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border-radius: 2px;
+  margin: 1px 0;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.r-sixline-zone:hover { background: rgba(155,89,182,0.25); }
+.r-sixline-zone.r-has-bet { background: rgba(255,215,0,0.15); border: 1px solid gold; }
+.r-sixline-zone.r-winning-zone { background: rgba(46,204,113,0.25); }
+
+.r-zone-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Street button ── */
+.r-street-btn {
+  flex: 0 0 28px;
+  height: 28px;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: 'Montserrat', Arial, sans-serif;
+  color: rgba(255,255,255,0.7);
+  background: rgba(155,89,182,0.15);
+  border: 1px solid rgba(155,89,182,0.4);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.r-street-btn:hover    { background: rgba(155,89,182,0.35); }
+.r-street-btn.r-has-bet { border-color: gold; background: rgba(255,215,0,0.12); }
+.r-street-btn.r-winning { box-shadow: 0 0 0 2px #2ecc71; }
+
+/* ── Number zero cell ── */
+.r-num-zero {
+  width: 60px;
+  height: 30px;
+  font-size: 14px;
+}
+
+/* ── Hint text ── */
+.r-hint-text {
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  margin: 2px 0 0;
+}
+
+/* ── Mobile adjustments for roulette ── */
+@media (max-width: 768px) {
+  .lobby-back-btn {
+    top: calc(env(safe-area-inset-top) + 50px);
+  }
+
+  .roulette-wheel-wrapper {
+    width: min(240px, 70vw);
+    height: min(240px, 70vw);
+  }
+
+  .r-ball { left: calc(min(240px, 70vw) * -0.44); }
+
+  .r-num     { height: 22px; }
+  .r-outside { height: 22px; }
+  .r-street-btn { flex: 0 0 24px; height: 22px; }
+
+  .r-stats-btn {
+    top: calc(env(safe-area-inset-top) + 50px);
+  }
+
+  .r-stats-panel {
+    top: auto;
+    bottom: 80px;
+    right: 8px;
+    width: calc(100vw - 16px);
+    max-width: 340px;
+    max-height: 50vh;
   }
 }

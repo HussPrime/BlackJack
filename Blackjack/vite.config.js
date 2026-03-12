@@ -11,4 +11,10 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    environment: 'node',
+    pool: 'forks',
+    include: ['src/**/__tests__/**/*.test.{js,jsx}'],
+    setupFiles: ['./src/logic/__tests__/vitest-setup.js'],
+  },
 })

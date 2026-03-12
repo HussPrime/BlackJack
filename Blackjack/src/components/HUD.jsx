@@ -1,58 +1,170 @@
-import { useState, useRef } from "react"
+import { useState } from "react";
 import PlayerHand from "./PlayerHand";
+import StatsPanel from "./StatsPanel";
 
+/**
+ * 2D overlay HUD component.
+ * Renders action buttons, insurance prompt, split indicator,
+ * basic-strategy hint, and the collapsible stats panel.
+ */
 export default function HUD({
   monney,
   bet,
   onHit,
   onStand,
   onRetry,
+  onDoubleDown,
+  onSurrender,
+  onSplit,
+  onTakeInsurance,
+  onDeclineInsurance,
+  onHint,
   isStand,
   isGameFinished,
   hasBet,
-  onResetCamera
+  canDouble,
+  canSurrender,
+  canSplit,
+  insuranceOffered,
+  hint,
+  stats,
+  showStats,
+  onToggleStats,
+  onResetCamera,
+  isSplit,
+  activeHandIndex,
+  splitHands,
 }) {
-  const [showRules, setShowRules] = useState(false)
-  const isBust = PlayerHand.getScore() 
+  const [showRules, setShowRules] = useState(false);
+
+  // Disable HIT / STAND when player has bust or already stood
+  const isBust = PlayerHand.getScore() > 21;
+  const disableActions = isBust || isStand;
 
   return (
     <>
-    <div className="hud">
+      {/* ── Top display ──────────────────────────────────────────────────── */}
+      <div className="hud">
+        <div className="hud-top">
+          <span>💸 {monney}</span>
+          <span>🎯 {bet}</span>
+        </div>
 
-      <div className="hud-top">
-        <span>💸 Money : {monney}</span>
-        <span>🎯 Bet : {bet}</span>
-      </div>
+        {/* ── Action area ─────────────────────────────────────────────────── */}
+        <div className="hud-actions">
 
-      <div className="hud-actions">
-        {
-            isGameFinished? 
-            <button className="hud-btn replay" onClick={onRetry}>CONTINUE</button> :
-            hasBet ?
+          {/* ── Insurance prompt ────────────────────────────────────────── */}
+          {insuranceOffered && (
+            <div className="insurance-prompt">
+              <span className="insurance-label">
+                Insurance? (costs {Math.floor(bet / 2)} chips, pays 2:1)
+              </span>
+              <div className="insurance-btns">
+                <button className="hud-btn insurance-yes" onClick={onTakeInsurance}>
+                  YES
+                </button>
+                <button className="hud-btn insurance-no" onClick={onDeclineInsurance}>
+                  NO
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* ── Split hand indicator ─────────────────────────────────────── */}
+          {isSplit && !isGameFinished && splitHands.length > 0 && (
+            <div className="split-indicator">
+              {splitHands.map((h, i) => (
+                <span
+                  key={i}
+                  className={`split-hand-badge ${i === activeHandIndex ? 'active' : ''} ${h.busted ? 'busted' : ''}`}
+                >
+                  Hand {i + 1}
+                  {h.busted ? ' 💥' : i === activeHandIndex ? ' ←' : ''}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* ── Hint display ─────────────────────────────────────────────── */}
+          {hint && hasBet && !isGameFinished && (
+            <div className="hint-badge">
+              💡 Basic strategy: <strong>{hint}</strong>
+            </div>
+          )}
+
+          {/* ── Main game buttons ────────────────────────────────────────── */}
+          {isGameFinished ? (
+            <button className="hud-btn replay" onClick={onRetry}>
+              CONTINUE
+            </button>
+          ) : hasBet && !insuranceOffered ? (
             <>
-            <button className={isBust || isStand ? "hud-btn-disable" : "hud-btn hit"} onClick={!isBust && !isStand ? onHit : function() {}}>
-              HIT
-            </button>
-            <button className={isBust || isStand ? "hud-btn-disable" : "hud-btn stand"} onClick={!isBust && !isStand ? onStand : function() {}}>
-              STAND
-            </button>
+              {/* HIT */}
+              <button
+                className={disableActions ? "hud-btn-disable" : "hud-btn hit"}
+                onClick={!disableActions ? onHit : undefined}
+              >
+                HIT
+              </button>
+
+              {/* STAND */}
+              <button
+                className={disableActions ? "hud-btn-disable" : "hud-btn stand"}
+                onClick={!disableActions ? onStand : undefined}
+              >
+                STAND
+              </button>
+
+              {/* DOUBLE DOWN — only on first two cards */}
+              {canDouble && (
+                <button className="hud-btn double" onClick={onDoubleDown}>
+                  DOUBLE
+                </button>
+              )}
+
+              {/* SPLIT — only on matching pair */}
+              {canSplit && (
+                <button className="hud-btn split" onClick={onSplit}>
+                  SPLIT
+                </button>
+              )}
+
+              {/* SURRENDER — only on first two cards, not after split */}
+              {canSurrender && (
+                <button className="hud-btn surrender" onClick={onSurrender}>
+                  SURRENDER
+                </button>
+              )}
+
+              {/* HINT — shows basic-strategy recommendation */}
+              {!disableActions && (
+                <button className="hud-btn hint-btn" onClick={onHint}>
+                  HINT
+                </button>
+              )}
             </>
-            :
-            <></>
-        }
+          ) : null}
+        </div>
       </div>
 
-    </div>
+      {/* ── Camera reset ──────────────────────────────────────────────────── */}
+      <button className="reset-camera-btn" onClick={onResetCamera}>
+        Reset Camera
+      </button>
 
-    {/* <div className="camera-hint">
-      Press <strong>R</strong> to reset camera
-    </div> */}
-    
-    <button className="reset-camera-btn" onClick={onResetCamera}>
-      Reset Camera
-    </button>
+      {/* ── Stats toggle ──────────────────────────────────────────────────── */}
+      <button
+        className="stats-toggle-btn"
+        onClick={onToggleStats}
+        title="Toggle statistics"
+      >
+        📊 STATS
+      </button>
 
-    {/* BOUTON RULES FIXE TOUJOURS VISIBLE */}
+      {/* ── Stats panel ───────────────────────────────────────────────────── */}
+      {showStats && <StatsPanel stats={stats} monney={monney} />}
+
+      {/* ── Rules button ──────────────────────────────────────────────────── */}
       <button
         className="rules-floating-btn"
         onClick={() => setShowRules(true)}
@@ -60,60 +172,76 @@ export default function HUD({
         🃏 RULES
       </button>
 
-      {/* FULLSCREEN RULES */}
+      {/* ── Rules overlay ─────────────────────────────────────────────────── */}
       {showRules && (
         <div className="rules-overlay" onClick={() => setShowRules(false)}>
-          <div
-            className="rules-container"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="rules-container" onClick={e => e.stopPropagation()}>
             <h1>🃏 Blackjack Rules</h1>
 
             <div className="rules-content">
               <h3>🎯 Objective</h3>
               <p>
-                Reach <strong>21</strong> or get as close as possible without going over.
+                Get as close to <strong>21</strong> as possible without going over,
+                and beat the dealer.
               </p>
-          
-              <h3>🃏 Blackjack</h3>
-              <p>
-                A Blackjack happens when your first two cards total <strong>21</strong> (an Ace + a 10-value card). It is the strongest hand.
-              </p>
-              <p>
-                If you win with a Blackjack, you receive <strong>2.5× your bet</strong> as a reward (instead of the usual 2×).
-              </p>
-          
+
               <h3>🃏 Card Values</h3>
               <ul>
-                <li>Number cards = face value</li>
+                <li>Number cards (2–10) = face value</li>
                 <li>J, Q, K = 10</li>
-                <li>Ace = 1 or 11 (automatic best choice)</li>
+                <li>Ace = 1 or 11 (best value chosen automatically)</li>
               </ul>
-          
-              <h3>🖐 Player Turn</h3>
+
+              <h3>🃏 Natural Blackjack</h3>
+              <p>
+                Ace + any 10-value card on the first two cards = Blackjack.
+                Pays <strong>3:2</strong> (1.5× your bet profit).
+              </p>
+
+              <h3>🖐 Player Actions</h3>
               <ul>
-                <li><strong>HIT</strong> → draw another card</li>
-                <li><strong>STAND</strong> → end your turn</li>
-                <li>If you exceed 21 → you lose</li>
+                <li><strong>HIT</strong> – draw another card</li>
+                <li><strong>STAND</strong> – end your turn</li>
+                <li>
+                  <strong>DOUBLE DOWN</strong> – first two cards only: double your
+                  bet, draw exactly one card
+                </li>
+                <li>
+                  <strong>SPLIT</strong> – when you have a pair: split into two hands,
+                  each gets a new card. Aces receive one card only.
+                </li>
+                <li>
+                  <strong>SURRENDER</strong> – first two cards only: forfeit the hand,
+                  recover <strong>50%</strong> of your bet
+                </li>
+                <li>
+                  <strong>INSURANCE</strong> – when dealer shows Ace: pay half your
+                  bet. Pays <strong>2:1</strong> if dealer has Blackjack
+                </li>
               </ul>
-          
-              <h3>🤖 Dealer Rules</h3>
+
+              <h3>🤖 Dealer Rules (Vegas)</h3>
               <ul>
-                <li>Dealer draws until reaching at least 17</li>
+                <li>Dealer hits on any total ≤ 16</li>
+                <li>Dealer hits on <strong>soft 17</strong> (Ace + 6)</li>
+                <li>Dealer stands on hard 17 or higher</li>
+                <li>Dealer peeks for Blackjack when showing Ace</li>
               </ul>
-          
-              <h3>💰 Winning</h3>
+
+              <h3>📦 Shoe</h3>
+              <p>6 standard decks (312 cards). Reshuffled at 75% penetration.</p>
+
+              <h3>💰 Payouts</h3>
               <ul>
-                <li>Blackjack win → 2.5× your bet</li>
-                <li>Normal win → 2× your bet</li>
-                <li>Tie → get your bet back</li>
-                <li>Bust → lose your bet</li>
+                <li>Blackjack → <strong>+1.5× bet</strong> (3:2)</li>
+                <li>Normal win → <strong>+1× bet</strong></li>
+                <li>Push (tie) → bet returned</li>
+                <li>Dealer Blackjack → lose bet (unless you also have BJ → push)</li>
+                <li>Insurance win → <strong>+2× insurance bet</strong></li>
               </ul>
             </div>
-            <button
-              className="rules-close-btn"
-              onClick={() => setShowRules(false)}
-            >
+
+            <button className="rules-close-btn" onClick={() => setShowRules(false)}>
               CLOSE
             </button>
           </div>

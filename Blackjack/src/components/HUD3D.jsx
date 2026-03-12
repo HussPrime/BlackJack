@@ -182,7 +182,8 @@ export default function HUD3D({
     }
   }
 
-  const prevDeckIds = new Set(prevDeck.map(c => c.id))
+  // Use uid (6-deck unique identifier) when available, fall back to id
+  const prevDeckIds = new Set(prevDeck.map(c => c.uid || c.id))
 
 
   return(
@@ -227,7 +228,7 @@ export default function HUD3D({
 
       <Suspense fallback={<Loader/>}>
         <Blackjack_table position={[0, -0.8715, -1.15]}/>   
-        { // Afficher la main du croupier
+        { // Dealer hand — use uid as key for 6-deck uniqueness
           dealerCards.map((c, index) => {
           const spacing = 0.15
           const totalCards = dealerCards.length
@@ -235,7 +236,7 @@ export default function HUD3D({
 
           return (
             <AnimatedPickUpCard
-              key={c.card.id}
+              key={c.card.uid || c.card.id}
               card={c.card}
               rotation={c.isHidden ? [-Math.PI*0.5, Math.PI, 0] : [-Math.PI*0.5, 0, 0]}
               position={[index * spacing - offset, 0.00111, -0.5]}
@@ -243,14 +244,14 @@ export default function HUD3D({
           )
         })
         }
-        { // Afficher la main du joueur
+        { // Player hand — use uid as key for 6-deck uniqueness
           playerCards.map((c, index) => {
-          const spacing = 0.03; // distance entre les cartes
+          const spacing = 0.03;
           const totalCards = playerCards.length;
-          const offset = ((totalCards - 1) * spacing) / 2; // calcule la moitié de la largeur totale
+          const offset = ((totalCards - 1) * spacing) / 2;
 
           return(<AnimatedPickUpCard
-            key={c.id}
+            key={c.uid || c.id}
             card={c}
             position={[index * spacing - offset -0.006, 0.00111+index*0.0001, 0.285]}
             rotation={[-Math.PI * 0.5, 0, 0]}
@@ -258,14 +259,15 @@ export default function HUD3D({
           
           })
         }
-        { // Afficher le tas
+        { // Deck pile — capped at VISUAL_DECK_SIZE cards for performance
           deck.map((c, index) => {
-            const spacing = 0.003; // distance entre les cartes
-            const isNew = !prevDeckIds.has(c.id)
+            const spacing = 0.003;
+            const uid = c.uid || c.id;
+            const isNew = !prevDeckIds.has(uid);
 
             return(
               <AnimatedPickUpCard
-                key={c.id}
+                key={uid}
                 card={c}
                 from={isNew ? [0.75, -0.5, -0.5] : undefined}
                 rotation={[-Math.PI * 0.5, Math.PI, 0]}
