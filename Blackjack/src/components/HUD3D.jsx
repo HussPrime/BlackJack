@@ -10,6 +10,7 @@ import { AnimatedChip } from "./AnimatedChips"
 import CameraController from "./CameraController"
 import Dealer from "./Dealer"
 import Loader from "./Loader"
+import Sound from "./Sound"
 
 export default function HUD3D({
     dealerCards,
@@ -24,7 +25,8 @@ export default function HUD3D({
     isGameFinished,
     hasWin,
     message,
-    cameraRef
+    cameraRef,
+    soundRef
 }){
   const font = "Montserrat/static/Montserrat-Bold.ttf"
   const parquet = useLoader(TextureLoader, `${import.meta.env.BASE_URL}textures/parquet.avif`)
@@ -319,6 +321,7 @@ export default function HUD3D({
         
         <Dealer/>
         {/*<Casino/>*/}
+        <Sound ref={soundRef} />
       </Suspense>
     </Canvas>
   )

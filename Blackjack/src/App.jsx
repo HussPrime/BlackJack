@@ -5,6 +5,7 @@ import DealerHand from "./components/DealerHand"
 import PlayerHand from "./components/PlayerHand"
 import Cards from "./components/Cards"
 import HUD from "./components/HUD"
+import Sound from "./components/Sound"
 //import Casino from "../public/casino/Casino-transformed"
 
 import HUD3D from "./components/HUD3D"
@@ -30,6 +31,7 @@ const BlackJack = () => {
   const betRef = useRef(0)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const cameraRef = useRef()
+  const soundRef = useRef()
 
   useEffect(() => {
     setHasWin(-1)
@@ -85,6 +87,7 @@ const BlackJack = () => {
   const onHit = (isRotated) => {
     PlayerHand.addCard(Cards.getRandomCard())
     const newScore = PlayerHand.getScore()
+    soundRef.current?.playPickUpCard()
 
     setPlayerCards([...PlayerHand.cards])
     setPlayerScore(newScore)
@@ -207,6 +210,7 @@ const onDouble = () => {
         hasWin={hasWin}
         message={message} 
         cameraRef={cameraRef}
+        soundRef={soundRef}
       />
       <HUD 
         monney={monney} 
@@ -221,7 +225,6 @@ const onDouble = () => {
         onResetCamera={() => cameraRef.current?.resetCamera()}
         isFirstRound={PlayerHand.cards.length == 2}
       />
-      
       {
         !hasBet ?
         <div className="hud-bet">

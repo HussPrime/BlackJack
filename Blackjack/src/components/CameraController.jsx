@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react"
+import { forwardRef, useEffect, useImperativeHandle } from "react"
 import { OrbitControls } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 
