@@ -25,6 +25,9 @@ const BlackJack = () => {
   const [deck, setDeck] = useState([])
   const [prevDeck, setPrevDeck] = useState([])
   const [hasWin, setHasWin] = useState(-1)
+  const [hasDoubled, setHasDoubled] = useState(false)
+  const [initialBet, setInitialBet] = useState(0)
+  const betRef = useRef(0)
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
   const cameraRef = useRef()
 
@@ -51,6 +54,7 @@ const BlackJack = () => {
   useEffect(() => {
     if(hasBet){
       Game.initGame();
+      setHasDoubled(false)
 
       setPlayerCards([...PlayerHand.cards]);
       setDealerCards([...DealerHand.cards]);
@@ -71,7 +75,14 @@ const BlackJack = () => {
 
   }, [hasBet])
 
-  const onHit = () => {
+  const revealDealerCards = async () => {
+    await sleep(100)
+    DealerHand.cards.forEach(c => {
+      c.isHidden = false
+    })
+  }
+
+  const onHit = (isRotated) => {
     PlayerHand.addCard(Cards.getRandomCard())
     const newScore = PlayerHand.getScore()
 
@@ -81,9 +92,10 @@ const BlackJack = () => {
     setDeck([...Cards.cards])
 
     if (newScore > 21) {
+      revealDealerCards()
       setMessage("You lost")
       setIsGameFinished(true)
-      setStand(true) // IMPORTANT : bloque HIT/STAND
+      setStand(true) 
     }
     else if (newScore === 21) {
       setMessage("Dealer's turn")
@@ -118,20 +130,18 @@ const BlackJack = () => {
     const finalDealerScore = DealerHand.getScore()
 
     // Check bj 
-    console.log(`finalPlayerScore = ${finalPlayerScore} | finalDealerScore = ${finalDealerScore} | PlayerHand.cards.length = ${PlayerHand.cards.length}`)
     if(finalPlayerScore == 21 && finalDealerScore != 21 && PlayerHand.cards.length == 2){
       setHasWin(1)
       setMessage("BlackJack")
       await sleep(500)
-      setMonney(m => m + 2.5 * bet)
-      console.log("blackjack")
+      setMonney(m => m + 2.5 * betRef.current)
     }
     else{
       if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
       setHasWin(1)
       setMessage("You won")
       await sleep(500)
-      setMonney(m => m + 2 * bet)
+      setMonney(m => m + 2 * betRef.current)
       }
       else if (finalPlayerScore < finalDealerScore){
         setHasWin(0)
@@ -141,12 +151,41 @@ const BlackJack = () => {
         setHasWin(2)
         setMessage("Tie")
         await sleep(500)
-        setMonney(m => m + bet)
+        setMonney(m => m + betRef.current)
       }
     }
 
     setIsGameFinished(true)
   }
+
+const onDouble = () => {
+  if (hasDoubled) return
+
+  setHasDoubled(true)
+
+  const newBet = initialBet * 2
+  betRef.current = newBet
+
+  setBet(newBet)
+  setMonney(m => m - initialBet) 
+
+  PlayerHand.addCard(Cards.getRandomCard())
+  const newScore = PlayerHand.getScore()
+
+  setPlayerCards([...PlayerHand.cards])
+  setPlayerScore(newScore)
+  setPrevDeck(deck)
+  setDeck([...Cards.cards])
+
+  if(newScore <= 21) 
+    onStand()
+  else{
+      revealDealerCards()
+      setMessage("You lost")
+      setIsGameFinished(true)
+      setStand(true) 
+  }
+}
 
   const onRetry = () => {
     setRestart(true)
@@ -173,22 +212,24 @@ const BlackJack = () => {
         monney={monney} 
         onHit={onHit} 
         onStand={onStand} 
+        onDouble={onDouble}
         isStand={stand} 
         onRetry={onRetry} 
         isGameFinished={isGameFinished} 
         hasBet={hasBet}
         bet={bet}
         onResetCamera={() => cameraRef.current?.resetCamera()}
+        isFirstRound={PlayerHand.cards.length == 2}
       />
       
       {
         !hasBet ?
         <div className="hud-bet">
           <span className="bet-label">Bet</span>
-          <input type="range" min="0" max={monney} value={bet} onChange={function(e) {setBet(Number(e.target.value))}} step="100" className="bet-slider" />
-          <span className="bet-value">{bet}</span>
+          <input type="range" min="0" max={monney} value={initialBet} onChange={(e) => { const value = Number(e.target.value); setBet(value); setInitialBet(value); }} step="100" className="bet-slider" />
+          <span className="bet-value">{initialBet}</span>
           <br/>
-          <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(monney-bet)}}>
+          <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(monney-bet); setInitialBet(bet); betRef.current = bet}}>
             BET
           </button>
         </div>

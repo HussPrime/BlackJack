@@ -5,7 +5,6 @@ import Cards from "./Cards";
 
 export default class Game extends React.Component{
     static initGame(){
-        console.log("init Game")
         DealerHand.resetCards()
         PlayerHand.resetCards()
 

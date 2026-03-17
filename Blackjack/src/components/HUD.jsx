@@ -7,10 +7,12 @@ export default function HUD({
   onHit,
   onStand,
   onRetry,
+  onDouble,
   isStand,
   isGameFinished,
   hasBet,
-  onResetCamera
+  onResetCamera,
+  isFirstRound
 }) {
   const [showRules, setShowRules] = useState(false)
   const isBust = PlayerHand.getScore() 
@@ -36,6 +38,9 @@ export default function HUD({
             <button className={isBust || isStand ? "hud-btn-disable" : "hud-btn stand"} onClick={!isBust && !isStand ? onStand : function() {}}>
               STAND
             </button>
+            <button className={isBust || isStand || monney < bet || !isFirstRound ? "hud-btn-disable" : "hud-btn double"} onClick={!isBust && !isStand ? onDouble : function() {}}>
+              Double
+            </button> : <></>
             </>
             :
             <></>
