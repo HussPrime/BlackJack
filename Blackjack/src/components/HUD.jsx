@@ -22,8 +22,7 @@ export default function HUD({
     <div className="hud">
 
       <div className="hud-top">
-        <span>💸 Money : {monney}</span>
-        <span>🎯 Bet : {bet}</span>
+        <span>💸 Argent : {monney}</span>
       </div>
 
       <div className="hud-actions">
@@ -54,7 +53,7 @@ export default function HUD({
     </div> */}
     
     <button className="reset-camera-btn" onClick={onResetCamera}>
-      Reset Camera
+      Réinitialiser la caméra
     </button>
 
     {/* BOUTON RULES FIXE TOUJOURS VISIBLE */}
@@ -62,7 +61,7 @@ export default function HUD({
         className="rules-floating-btn"
         onClick={() => setShowRules(true)}
       >
-        🃏 RULES
+        🃏 RÈGLES
       </button>
 
       {/* FULLSCREEN RULES */}
@@ -72,54 +71,56 @@ export default function HUD({
             className="rules-container"
             onClick={(e) => e.stopPropagation()}
           >
-            <h1>🃏 Blackjack Rules</h1>
-
+            <h1>🃏 Règles du Blackjack</h1>
+      
             <div className="rules-content">
-              <h3>🎯 Objective</h3>
+              <h3>🎯 Objectif</h3>
               <p>
-                Reach <strong>21</strong> or get as close as possible without going over.
+                Atteindre <strong>21</strong> ou s’en approcher le plus possible sans dépasser.
               </p>
           
               <h3>🃏 Blackjack</h3>
               <p>
-                A Blackjack happens when your first two cards total <strong>21</strong> (an Ace + a 10-value card). It is the strongest hand.
+                Un Blackjack se produit lorsque vos deux premières cartes totalisent <strong>21</strong> (un As + une carte valant 10). C’est la meilleure main.
               </p>
               <p>
-                If you win with a Blackjack, you receive <strong>2.5× your bet</strong> as a reward (instead of the usual 2×).
+                Si vous gagnez avec un Blackjack, vous recevez <strong>2.5× votre mise</strong> (au lieu des 2× habituels).
               </p>
           
-              <h3>🃏 Card Values</h3>
+              <h3>🃏 Valeur des cartes</h3>
               <ul>
-                <li>Number cards = face value</li>
-                <li>J, Q, K = 10</li>
-                <li>Ace = 1 or 11 (automatic best choice)</li>
+                <li>Cartes numériques = valeur indiquée</li>
+                <li>Valet, Dame, Roi = 10</li>
+                <li>As = 1 ou 11 (choix automatique le plus avantageux)</li>
               </ul>
           
-              <h3>🖐 Player Turn</h3>
+              <h3>🖐 Tour du joueur</h3>
               <ul>
-                <li><strong>HIT</strong> → draw another card</li>
-                <li><strong>STAND</strong> → end your turn</li>
-                <li>If you exceed 21 → you lose</li>
+                <li><strong>HIT</strong> → tirer une carte</li>
+                <li><strong>STAND</strong> → terminer son tour</li>
+                <li><strong>DOUBLE</strong> → doubler sa mise, tirer une seule carte puis terminer son tour</li>
+                <li>Si vous dépassez 21 → vous perdez</li>
               </ul>
           
-              <h3>🤖 Dealer Rules</h3>
+              <h3>🤖 Règles du croupier</h3>
               <ul>
-                <li>Dealer draws until reaching at least 17</li>
+                <li>Le croupier tire jusqu’à atteindre au moins 17</li>
               </ul>
           
-              <h3>💰 Winning</h3>
+              <h3>💰 Gains</h3>
               <ul>
-                <li>Blackjack win → 2.5× your bet</li>
-                <li>Normal win → 2× your bet</li>
-                <li>Tie → get your bet back</li>
-                <li>Bust → lose your bet</li>
+                <li>Blackjack → 2.5× la mise</li>
+                <li>Victoire normale → 2× la mise</li>
+                <li>Égalité → récupération de la mise</li>
+                <li>Dépassement (bust) → perte de la mise</li>
               </ul>
             </div>
+      
             <button
               className="rules-close-btn"
               onClick={() => setShowRules(false)}
             >
-              CLOSE
+              FERMER
             </button>
           </div>
         </div>

@@ -8,10 +8,11 @@ export default class Cards extends React.Component{
         this.cards = [...cards];
     }
 
-    static getRandomCard(){
+    static getRandomCard({ soundRef } = {}){
         const index = Math.floor(Math.random() * this.cards.length);
         const card = this.cards[index];
         this.cards.splice(index, 1);
+        soundRef?.current?.playPickUpCard()
         return card;
     }
 }
