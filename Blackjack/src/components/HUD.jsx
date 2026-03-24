@@ -39,7 +39,7 @@ export default function HUD({
             </button>
             <button className={isBust || isStand || monney < bet || !isFirstRound ? "hud-btn-disable" : "hud-btn double"} onClick={!isBust && !isStand ? onDouble : function() {}}>
               Double
-            </button> : <></>
+            </button>  
             </>
             :
             <></>
