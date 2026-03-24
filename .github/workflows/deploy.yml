@@ -29,7 +29,7 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --global user.email "ci@github.com"
+          git config --global user.email "hussmzd@gmail.com"
           git config --global user.name "GitHub Actions"
         working-directory: Blackjack
 
