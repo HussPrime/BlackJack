@@ -3,6 +3,8 @@ stages:
 
 sync_to_github:
   stage: sync
+  variables:
+    GIT_DEPTH: 0
   only:
     - main
   image: alpine:latest
