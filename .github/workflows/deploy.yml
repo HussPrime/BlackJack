@@ -38,7 +38,7 @@ jobs:
         working-directory: Blackjack
 
       - name: Deploy to GitHub Pages
-        run: npx gh-pages -d dist
+        run: npx gh-pages -d dist -r https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/HussPrime/BlackJack.git
         working-directory: Blackjack
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
