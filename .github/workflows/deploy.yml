@@ -36,3 +36,5 @@ jobs:
       - name: Deploy
         run: npm run deploy
         working-directory: Blackjack
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
