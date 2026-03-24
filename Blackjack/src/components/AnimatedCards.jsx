@@ -1,4 +1,4 @@
-import { animated, useSpring, useTransition } from "@react-spring/three"
+import { animated, useSpring } from "@react-spring/three"
 import Card_Deck from "./Card_deck"
 
 export const AnimatedPickUpCard = ({card, position, rotation, from = [0.75, 0, -0.5], delay = 0}) => {

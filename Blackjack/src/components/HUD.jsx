@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState } from "react"
 import PlayerHand from "./PlayerHand";
 
 export default function HUD({

@@ -15,7 +15,7 @@ const BlackJack = () => {
   const [dealerCards, setDealerCards] = useState(DealerHand.cards)
   const [playerScore, setPlayerScore] = useState(0);
   const [dealerScore, setDealerScore] = useState(0);
-  const [monney, setMonney] = useState(1000);
+  const [money, setMoney] = useState(1000);
   const [bet, setBet] = useState(0);
   const [hasBet, setHasBet] = useState(false);
   const roundBetRef = useRef(0)
@@ -35,7 +35,7 @@ const BlackJack = () => {
   useEffect(() => {
     setHasWin(-1)
     setHasBet(false)
-    setBet(Math.min(baseBetRef.current, monney))
+    setBet(Math.min(baseBetRef.current, money))
     setRestart(false)
     setStand(false)
     setIsGameFinished(false)
@@ -44,9 +44,9 @@ const BlackJack = () => {
     setDeck([...Cards.cards])
     
 
-    if(monney <= 0){
+    if(money <= 0){
       let x = 100 //Math.floor(Math.random() * 100) + 1
-      setMonney(x)
+      setMoney(x)
       setMessage(`Quelqu'un vous a donné ${x}`)
     }
 
@@ -140,14 +140,14 @@ const BlackJack = () => {
       setMessage("BlackJack")
       await sleep(500)
       soundRef.current?.playChip()
-      setMonney(m => m + 2.5 * betAmount)
+      setMoney(m => m + 2.5 * betAmount)
     }
     else if (finalDealerScore > 21 || finalPlayerScore > finalDealerScore){
     setHasWin(1)
     setMessage("Gagné")
     await sleep(500)
     soundRef.current?.playChip()
-    setMonney(m => m + 2 * betAmount)
+    setMoney(m => m + 2 * betAmount)
     }
     else if (finalPlayerScore < finalDealerScore){
       setHasWin(0)
@@ -158,7 +158,7 @@ const BlackJack = () => {
       setMessage("Égalité")
       await sleep(500)
       soundRef.current?.playChip()
-      setMonney(m => m + betAmount)
+      setMoney(m => m + betAmount)
     }
     
 
@@ -166,11 +166,11 @@ const BlackJack = () => {
   }
 
 const onDouble = () => {
-  if (hasDoubled || monney < roundBetRef.current) return
+  if (hasDoubled || money < roundBetRef.current) return
 
   setHasDoubled(true)
 
-  setMonney(m => m - roundBetRef.current * 0.5)
+  setMoney(m => m - roundBetRef.current * 0.5)
 
    roundBetRef.current *= 2
   setBet(roundBetRef.current)
@@ -207,7 +207,7 @@ const onDouble = () => {
         playerScore={playerScore}
         deck={deck}
         prevDeck={prevDeck}
-        monney={monney}
+        monney={money}
         bet={bet}
         hasBet={hasBet}
         isGameFinished={isGameFinished}
@@ -217,7 +217,7 @@ const onDouble = () => {
         soundRef={soundRef}
       />
       <HUD 
-        monney={monney} 
+        monney={money} 
         onHit={onHit} 
         onStand={onStand} 
         onDouble={onDouble}
@@ -236,7 +236,7 @@ const onDouble = () => {
           <input
             type="range"
             min="0"
-            max={monney}
+            max={money}
             value={bet}
             onChange={function (e) { setBet(Number(e.target.value)); soundRef.current?.playChip() }}
             step="100"
@@ -244,7 +244,7 @@ const onDouble = () => {
           />
           <span className="bet-value">{bet}</span>
           <br/>
-          <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMonney(m => m - bet); roundBetRef.current = bet; baseBetRef.current = bet }}>
+          <button className={"hud-btn bet"} onClick={function(){setHasBet(true); setMoney(m => m - bet); roundBetRef.current = bet; baseBetRef.current = bet }}>
             MISER
           </button>
         </div>
