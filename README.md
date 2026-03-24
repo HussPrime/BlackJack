@@ -28,7 +28,7 @@ git clone https://github.com/MazyadH1/blackjack.git
 2. Se déplacer dans le dossier :
 
 ```bash
-cd ./Blackjack
+cd ./Blackjack/Blackjack
 ```
 
 3. Installe les dépendances :
