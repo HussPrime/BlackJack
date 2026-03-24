@@ -44,7 +44,7 @@ const BlackJack = () => {
     setDeck([...Cards.cards])
     
 
-    if(money <= 0){
+    if(money < 100){
       let x = 100 //Math.floor(Math.random() * 100) + 1
       setMoney(x)
       setMessage(`Quelqu'un vous a donné ${x}`)
