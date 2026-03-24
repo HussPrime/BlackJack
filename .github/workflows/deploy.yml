@@ -23,6 +23,12 @@ jobs:
         with:
           node-version: 20
 
+      - name: Setup Git
+        run: |
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Actions"
+        working-directory: Blackjack
+
       - name: Install deps
         run: npm install
         working-directory: Blackjack
