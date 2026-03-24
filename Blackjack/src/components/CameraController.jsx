@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle } from "react"
+import { forwardRef, useEffect, useImperativeHandle } from "react"
 import { OrbitControls } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 
@@ -29,7 +29,7 @@ const CameraController = forwardRef((props, ref) => {
 
       enablePan={false}
       enableDamping
-      dampingFactor={0.1}
+      dampingFactor={0.125}
     />
   )
 })

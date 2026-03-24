@@ -12,13 +12,8 @@ export default function Model({card, position, rotation, ...props}) {
   if(card){
     return (
       <group position={position} rotation={rotation} {...props}>
-
-        {/* Pivot global */}
         <group scale={[0.003, 0.0025, 0.003]}>
-
-          {/* Centre visuel ajustable */}
           <group position={[0, 0, -0.5]}>
-
             {card.meshes.map((m, i) => (
               <mesh
                 key={i}
@@ -26,7 +21,6 @@ export default function Model({card, position, rotation, ...props}) {
                 material={materials[m.materials]}
               />
             ))}
-
           </group>
         </group>
       </group>

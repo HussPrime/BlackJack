@@ -100,6 +100,10 @@ body {
   border: 2px solid #e74c3c;
 }
 
+.hud-btn.double {
+  border: 2px solid gold;
+}
+
 .hud-btn.bet,
 .hud-btn.replay {
   border: 2px solid gold;
@@ -322,30 +326,142 @@ body {
 }
 
 /* ---------- RESPONSIVE MOBILE ---------- */
+/* ---------- MOBILE LAYOUT FIXES ---------- */
 @media (max-width: 768px) {
 
+  /* Prevent content under notches / home indicators */
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* HUD container (helps isolate layers) */
+  .hud {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* SCORES - top area */
   .hud-top {
-    top: 1.5vh;
-  }
-
-  .hud-actions {
-    bottom: 3vh;
-  }
-
-  .rules-container {
-    width: 92%;
-    padding: 24px;
-  }
-
-  .rules-floating-btn {
-    bottom: 15px;
-    right: 15px;
-    padding: 10px 14px;
+    position: absolute;
+    top: max(1.2vh, env(safe-area-inset-top));
+    left: 50%;
+    transform: translateX(-50%);
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
     font-size: 14px;
   }
 
-  .camera-hint{
-    display: none;
+  .hud-top span {
+    padding: 6px 12px;
+    border-radius: 16px;
   }
 
+  /* ACTIONS - bottom area */
+  .hud-actions {
+    position: absolute;
+    bottom: max(2.5vh, env(safe-area-inset-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    pointer-events: auto;
+    width: 100%;
+    padding: 0 12px;
+  }
+
+  .hud-btn,
+  .hud-btn-disable {
+    min-height: 44px;
+    min-width: 96px;
+    padding: 10px 22px;
+    border-radius: 24px;
+    font-size: 14px;
+  }
+
+  /* BET SLIDER - separate layer */
+  .hud-bet {
+    position: absolute;
+    bottom: calc(max(2.5vh, env(safe-area-inset-bottom)));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 320px;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .bet-slider {
+    width: 140px;
+  }
+
+  /* RULES MODAL */
+  .rules-container {
+    width: 92%;
+    max-height: 80vh;
+    padding: 22px;
+  }
+
+  /* FLOATING BUTTON (no overlap with HUD) */
+/* RULES BUTTON -> TOP RIGHT */
+  .rules-floating-btn {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 12px);
+    right: 12px;
+    bottom: auto;
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 10px;
+    z-index: 9999;
+  }
+
+  /* CAMERA / RESET (stack to avoid clash) */
+  /* RESET CAMERA -> TOP LEFT */
+  .reset-camera-btn {
+    position: fixed;
+    top: calc(env(safe-area-inset-top) + 12px);
+    left: 12px;
+    bottom: auto;
+    padding: 10px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+    z-index: 9999;
+  }
+
+  /* HIDE OPTIONAL HINTS */
+  .camera-hint {
+    display: none;
+  }
+}
+
+/* ---------- SMALL PHONES ---------- */
+@media (max-width: 400px) {
+
+  .hud-actions {
+    gap: 8px;
+  }
+
+  .hud-btn,
+  .hud-btn-disable {
+    min-width: 86px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .hud-bet {
+    bottom: calc(max(2.5vh, env(safe-area-inset-bottom)));
+  }
+
+  .bet-slider {
+    width: 120px;
+  }
+
+  .rules-container {
+    padding: 18px;
+  }
 }
