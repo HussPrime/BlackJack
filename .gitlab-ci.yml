@@ -16,4 +16,4 @@ sync_to_github:
     - git remote add github https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/BlackJack.git
 
     # Push vers GitHub
-    - git push github main
+    - git push github HEAD:main
