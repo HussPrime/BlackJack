@@ -15,7 +15,7 @@ const BlackJack = () => {
   const [dealerCards, setDealerCards] = useState(DealerHand.cards)
   const [playerScore, setPlayerScore] = useState(0);
   const [dealerScore, setDealerScore] = useState(0);
-  const [money, setMoney] = useState(1000);
+  const [money, setMoney] = useState(500);
   const [bet, setBet] = useState(0);
   const [hasBet, setHasBet] = useState(false);
   const roundBetRef = useRef(0)
